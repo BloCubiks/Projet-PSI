@@ -44,9 +44,10 @@ namespace PSI_Livrable_1
                     }
                     Association.AjouterLien(new Lien(Association.Noeuds[p], Association.Noeuds[q])); //creation du lien
                 }
+                Console.WriteLine("Liste d'adjacence : "); 
                 Association.AfficherListeAdjacence(); //affichage de la liste d'adjacence
                 Association.Generer_Matrice(); //generation de la matrice d'adjacence
-                Console.WriteLine("Matrice d'adjacence : "); // affichage de la matrice d'adjacence
+                Console.WriteLine("\nMatrice d'adjacence : "); // affichage de la matrice d'adjacence
                 for (int u = 0; u < Association.Noeuds.Count; u++)
                 {
                     for (int v = 0; v < Association.Noeuds.Count; v++)
@@ -56,17 +57,18 @@ namespace PSI_Livrable_1
                     Console.WriteLine();
                 }
                 List<Noeud> parcours_Large = Association.Parcours_Largeur(Association.Noeuds[0]); //parcours en largeur
-                Console.WriteLine("Parcours en largeur : ");
+                Console.WriteLine("\nParcours en Largeur a partir du noeud 0: ");
                 foreach (Noeud n in parcours_Large)
                 {
                     Console.Write(n.Id + " ");
                 }
-                List<Noeud> parcours_Long = Association.Parcours_Longueur(Association.Noeuds[0]); //parcours en Longueur
-                Console.WriteLine("\nParcours en Longueur : ");
-                foreach (Noeud n in parcours_Long)
+                List<Noeud> parcours_Prof = Association.Parcours_Profondeur(Association.Noeuds[0]); //parcours en Profondeur
+                Console.WriteLine("\nParcours en Profondeur a partir du noeud 0: ");
+                foreach (Noeud n in parcours_Prof)
                 {
                     Console.Write(n.Id + " ");
                 }
+                Console.WriteLine();
             }
             catch (FileNotFoundException f)
             {

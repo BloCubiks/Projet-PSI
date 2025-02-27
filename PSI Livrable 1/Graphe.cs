@@ -114,11 +114,11 @@ namespace PSI_Livrable_1
             return Parcours;
         }
         /// <summary>
-        /// Parcours en longueur du graphe a partir d'un noeud de depart
+        /// Parcours en profondeur du graphe a partir d'un noeud de depart
         /// </summary>
         /// <param name="Noeud_Depart">noeud de depart</param>
-        /// <returns>list de noeuds qui est un parcours en longueur du graphe</returns>
-        public List<Noeud> Parcours_Longueur(Noeud Noeud_Depart)
+        /// <returns>list de noeuds qui est un parcours en profondeur du graphe</returns>
+        public List<Noeud> Parcours_Profondeur(Noeud Noeud_Depart)
         {
             List<Noeud> Parcours = new List<Noeud>();
             Stack<Noeud> Noeuds_a_tester = new Stack<Noeud>(); //on utilise une pile car on peut aller en profondeur puis revenir
