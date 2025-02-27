@@ -1,0 +1,7 @@
+C:\Users\clovi\source\repos\PSI Livrable 1\PSI Livrable 1\bin\Debug\PSI Livrable 1.exe.config
+C:\Users\clovi\source\repos\PSI Livrable 1\PSI Livrable 1\bin\Debug\PSI Livrable 1.exe
+C:\Users\clovi\source\repos\PSI Livrable 1\PSI Livrable 1\bin\Debug\PSI Livrable 1.pdb
+C:\Users\clovi\source\repos\PSI Livrable 1\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.AssemblyReference.cache
+C:\Users\clovi\source\repos\PSI Livrable 1\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.CoreCompileInputs.cache
+C:\Users\clovi\source\repos\PSI Livrable 1\PSI Livrable 1\obj\Debug\PSI Livrable 1.exe
+C:\Users\clovi\source\repos\PSI Livrable 1\PSI Livrable 1\obj\Debug\PSI Livrable 1.pdb
