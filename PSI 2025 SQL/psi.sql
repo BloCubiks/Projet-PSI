@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS psi;
 CREATE DATABASE IF NOT EXISTS psi;
 USE psi;
 
@@ -13,7 +14,7 @@ CREATE TABLE Cuisinier (
     Mail VARCHAR(100),
     Metro VARCHAR(50),
     NbreLivraison INT,
-    Note FLOAT check (0<=note<=5)
+    Note FLOAT check (0<=note AND note<=5)
 );
 
 -- Table Client
