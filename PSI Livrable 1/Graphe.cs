@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PSI_Livrable_1
 {
-    internal class Graphe
+    public class Graphe
     {
         private List<Noeud> noeuds;
         private List<Lien> liens;
@@ -140,6 +140,67 @@ namespace PSI_Livrable_1
             }
             return Parcours;
         }
+        /// <summary>
+        /// On verifie si le graphe est connexe lorsqu'un parcours est de la meme taille que le nombre de noeuds
+        /// </summary>
+        /// <returns></returns>
+        public bool Est_Connexe()
+        {
+            List<Noeud> Parcours = Parcours_Profondeur(Noeuds[0]);
+            return Parcours.Count == Noeuds.Count;
+        }
+        /// <summary>
+        /// Programme qui permet de detecter un cycle dans un graphe
+        /// </summary>
+        /// <returns></returns>
+        public List<Noeud> Cycle()
+        {
+            List<Noeud> cycle = null;
+            List<Noeud> visites = new List<Noeud>(); // Liste pour suivre les nœuds visités
+            Dictionary<Noeud, Noeud> parents = new Dictionary<Noeud, Noeud>(); // Pour retracer le cycle
+
+            for (int i = 0; i < Noeuds.Count; i++)
+            {
+                if (!visites.Contains(Noeuds[i]))
+                {
+                    Stack<Noeud> Noeuds_a_tester = new Stack<Noeud>();
+                    Noeuds_a_tester.Push(Noeuds[i]);
+                    while (Noeuds_a_tester.Count > 0)
+                    {
+                        Noeud actuel = Noeuds_a_tester.Pop();
+                        if (!visites.Contains(actuel))
+                        {
+                            visites.Add(actuel);
+
+                            foreach (Noeud voisin in liste_Adjacence[actuel])
+                            {
+                                if (!visites.Contains(voisin))
+                                {
+                                    Noeuds_a_tester.Push(voisin);
+                                    parents[voisin] = actuel; // Enregistrer le parent pour retracer le cycle
+                                }
+                                else if (parents.ContainsKey(actuel) && voisin != parents[actuel])// Cycle détecté
+                                {  
+                                    cycle = new List<Noeud>();
+                                    Noeud current = actuel;
+                                    while (current != voisin)
+                                    {
+                                        cycle.Add(current);
+                                        current = parents[current];
+                                    }
+                                    cycle.Add(voisin);
+                                    cycle.Add(actuel); // Ajouter le point de départ pour fermer le cycle
+                                    cycle.Reverse(); // Reconstituer l'ordre correct
+                                    return cycle;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return cycle;
+        }
+
         public List<Noeud> Noeuds
         {
             get { return noeuds; }

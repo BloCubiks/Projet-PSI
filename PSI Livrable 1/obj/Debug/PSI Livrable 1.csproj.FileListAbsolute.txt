@@ -12,3 +12,10 @@ C:\Users\clovi\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI
 C:\Users\clovi\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.CoreCompileInputs.cache
 C:\Users\clovi\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.exe
 C:\Users\clovi\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.pdb
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI Livrable 1.exe.config
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI Livrable 1.exe
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI Livrable 1.pdb
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.AssemblyReference.cache
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.CoreCompileInputs.cache
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.exe
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.pdb

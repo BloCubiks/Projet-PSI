@@ -5,10 +5,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PSI_Livrable_1
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -68,7 +69,22 @@ namespace PSI_Livrable_1
                 {
                     Console.Write(n.Id + " ");
                 }
+                
+                List<Noeud> cycle = Association.Cycle(); //recherche de cycle
+                if (cycle != null)
+                {
+                    Console.WriteLine("\nLe graphe contient un cycle :");
+                    foreach (Noeud n in cycle)
+                    {
+                        Console.Write(n.Id + " ");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\nLe graphe ne contient pas de cycle ");
+                }
                 Console.WriteLine();
+                Application.Run(new Visualisation(Association));
             }
             catch (FileNotFoundException f)
             {

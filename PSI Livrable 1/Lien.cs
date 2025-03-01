@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PSI_Livrable_1
 {
-    internal class Lien
+    public class Lien
     {
         private Noeud noeud1;
         private Noeud noeud2;
