@@ -1,8 +1,7 @@
-DROP DATABASE IF EXISTS psi;
 CREATE DATABASE IF NOT EXISTS psi;
 USE psi;
 
--- Table Cuisinier
+-- Création de la table Cuisinier
 CREATE TABLE Cuisinier (
     NumeroCuis INT PRIMARY KEY,
     NomCuis VARCHAR(50),
@@ -14,8 +13,10 @@ CREATE TABLE Cuisinier (
     Mail VARCHAR(100),
     Metro VARCHAR(50),
     NbreLivraison INT,
-    Note FLOAT check (0<=note AND note<=5)
+    Note FLOAT CHECK (0 <= Note <= 5)
 );
+
+
 
 -- Table Client
 CREATE TABLE Client (
@@ -117,4 +118,12 @@ CREATE TABLE Specialise (
     TypeClient ENUM('Particulier', 'Entreprise') NOT NULL,
     FOREIGN KEY (NumeroClient) REFERENCES Client(NumeroClient) ON DELETE CASCADE
 );
+
+-- Peuplement Cuisinier
+LOAD DATA INFILE 'Cuisinier.txt'
+INTO TABLE Cuisinier
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 ROWS;
 

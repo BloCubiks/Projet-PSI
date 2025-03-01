@@ -1,0 +1,7 @@
+Pour le peuplement, nous allons utiliser la fonction load data infile.
+Pour cela, il faut desactiver la secure file priv.
+regardez cette video qui explique etape par etape comment faire: https://www.youtube.com/watch?v=aPj0XyuTiXE
+Ensuite, il faut mettre les fichiers Cuisinier et Client . csv dans le serveur SQL.
+il faut aller dans programdata (souvent dans le C:), MySQL,MYSQL Serveur 8.0, DATA et puis 
+dans le fichier psi apres la creation des tables.
+Reste plus qua le lancer pour peupler les tables.
