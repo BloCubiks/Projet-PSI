@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\PSI 2025 SQL",
-    "\\PSI Livrable 1"
+    "\\PSI Livrable 1",
+    "\\TestUnit"
   ],
-  "SelectedNode": "\\PSI Livrable 1\\Program.cs",
+  "SelectedNode": "\\TestUnit\\UnitTest1.cs",
   "PreviewInSolutionExplorer": false
 }

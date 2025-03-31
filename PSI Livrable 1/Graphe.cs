@@ -46,18 +46,25 @@ namespace PSI_Livrable_1
         /// <param name="lien">lien a ajouter au graphe</param>
         public void AjouterLien(Lien lien)
         {
-            if (lien.Noeud1 != null && lien.Noeud2 != null && noeuds.Contains(lien.Noeud1) && noeuds.Contains(lien.Noeud2))
+            if (lien.NoeudDepart != null && lien.NoeudArrive != null && noeuds.Contains(lien.NoeudDepart) && noeuds.Contains(lien.NoeudArrive))
             {
                 liens.Add(lien);
-                if (!liste_Adjacence[lien.Noeud1].Contains(lien.Noeud2))
+                if (!liste_Adjacence[lien.NoeudDepart].Contains(lien.NoeudArrive))
                 {
-                    liste_Adjacence[lien.Noeud1].Add(lien.Noeud2);
-                }
-                if (!liste_Adjacence[lien.Noeud2].Contains(lien.Noeud1))
-                {
-                    liste_Adjacence[lien.Noeud2].Add(lien.Noeud1);
+                    liste_Adjacence[lien.NoeudDepart].Add(lien.NoeudArrive);
                 }
             }
+        }
+        public Lien Rechercher_Lien(Noeud Noeud_Depart, Noeud Noeud_arrive)
+        {
+            foreach (Lien lien in liens)
+            {
+                if (lien.NoeudDepart == Noeud_Depart && lien.NoeudArrive == Noeud_Depart)
+                {
+                    return lien;
+                }
+            }
+            return null;
         }
         /// <summary>
         /// Fonction qui genere la matrice d'ajacence a partir des liens du graphe et qui est appelée a la fin de la creation du graphe
@@ -68,8 +75,8 @@ namespace PSI_Livrable_1
             matrice_Adjacence = new int[n, n];
             for (int i =0; i < liens.Count; i++)
             {
-                matrice_Adjacence[liens[i].Noeud1.Id-1, liens[i].Noeud2.Id-1] = 1;//on met-1 car notre graphe commence a 1
-                matrice_Adjacence[liens[i].Noeud2.Id-1, liens[i].Noeud1.Id-1] = 1;
+                matrice_Adjacence[liens[i].NoeudDepart.Id-1, liens[i].NoeudDepart.Id-1] = 1;//on met-1 car notre graphe commence a 1
+                matrice_Adjacence[liens[i].NoeudArrive.Id-1, liens[i].NoeudArrive.Id-1] = 1;
             }
         }
         public void AfficherListeAdjacence()
@@ -143,7 +150,7 @@ namespace PSI_Livrable_1
         /// <summary>
         /// On verifie si le graphe est connexe lorsqu'un parcours est de la meme taille que le nombre de noeuds
         /// </summary>
-        /// <returns></returns>
+        /// <returns>vrai il est connexe ou faux il ne l'est pas</returns>
         public bool Est_Connexe()
         {
             List<Noeud> Parcours = Parcours_Profondeur(Noeuds[0]);
@@ -152,7 +159,7 @@ namespace PSI_Livrable_1
         /// <summary>
         /// Programme qui permet de detecter un cycle dans un graphe
         /// </summary>
-        /// <returns></returns>
+        /// <returns>retourne un cycle</returns>
         public List<Noeud> Cycle()
         {
             List<Noeud> cycle = null;
@@ -200,7 +207,112 @@ namespace PSI_Livrable_1
             }
             return cycle;
         }
+        /// <summary>
+        /// Algorithme de Recherche de chemin de Dijkstra qui se base sur un parcours en largeur
+        /// </summary>
+        /// <param name="Noeud_Depart">Noeud a partir du quel on veut chercher les chemins</param>
+        /// <returns>renvoie une matrice qui donne le poids et le predecesseur du noeud en index</returns>
+        public int[,] Dijkstra(Noeud Noeud_Depart)
+        {
+            int[,] Chemin = new int[Noeuds.Count, 2];
+            Dictionary<Noeud, int> distances = new Dictionary<Noeud, int>();
+            Dictionary<Noeud, Noeud> predecesseur = new Dictionary<Noeud, Noeud>();
+            foreach (Noeud n in noeuds)
+            {
+                distances[n] = int.MaxValue;
+            }
+            distances[Noeud_Depart] = 0;
 
+            Queue<Noeud> Noeuds_a_tester = new Queue<Noeud>();
+            Noeuds_a_tester.Enqueue(Noeud_Depart);
+            while (Noeuds_a_tester.Count != 0)
+            {
+                Noeud n = Noeuds_a_tester.Dequeue();
+                foreach (Noeud voisin in liste_Adjacence[n])
+                {
+                    Lien liaison = Rechercher_Lien(n, voisin);
+                    int distance = distances[n] + liaison.Poids;
+                    if (distance < distances[voisin])
+                    {
+                        distances[voisin] = distance;
+                        predecesseur[voisin] = n;
+                        Noeuds_a_tester.Enqueue(voisin);
+                    }
+                }
+            }
+            // on remplit la matrice de chemin
+            for (int i =0;i < noeuds.Count; i++)
+            {
+                Chemin[i, 0] = distances[noeuds[i]];
+                Chemin[i, 1] = predecesseur[noeuds[i]].Id;
+            }
+            return Chemin;
+        }
+        /// <summary>
+        /// Algorithme de Recherche de chemin de Bellman-Ford
+        /// </summary>
+        /// <param name="Noeud_Depart">Noeud a partir du quel on veut chercher les chemins</param>
+        /// <returns>renvoie une matrice qui donne le poids et le predecesseur du noeud en index</returns>
+        public int[,] Bellman_Ford(Noeud Noeud_Depart)
+        {
+            int[,] Chemin = new int[Noeuds.Count, 2];
+            Dictionary<Noeud, int> distances = new Dictionary<Noeud, int>();
+            Dictionary<Noeud, Noeud> predecesseur = new Dictionary<Noeud, Noeud>();
+            foreach (Noeud n in noeuds)
+            {
+                distances[n] = int.MaxValue;
+            }
+            distances[Noeud_Depart] = 0;
+
+            for (int i = 0; i < noeuds.Count - 1; i++)
+            {
+                foreach (Lien liaison in liens)
+                {
+                    if (distances[noeuds[liaison.NoeudDepart.Id]] + liaison.Poids < distances[noeuds[liaison.NoeudArrive.Id]])
+                    {
+                        distances[noeuds[liaison.NoeudArrive.Id]] = distances[noeuds[liaison.NoeudDepart.Id]] + liaison.Poids;
+                        predecesseur[noeuds[liaison.NoeudArrive.Id]] = noeuds[liaison.NoeudDepart.Id];
+                    }
+                }
+            }
+            // on remplit la matrice de chemin
+            for (int i = 0; i < noeuds.Count; i++)
+            {
+                Chemin[i, 0] = distances[noeuds[i]];
+                Chemin[i, 1] = predecesseur[noeuds[i]].Id;
+            }
+            return Chemin;
+        }
+        /// <summary>
+        /// Algorithme de Recherche de chemin de Floyd-Warshall
+        /// </summary>
+        /// <returns>matrice des chemins les plus courts</returns>
+        public int[,] Floyd_Warshall()
+        {
+            Generer_Matrice();
+            int[,] matriceFloyd = new int[noeuds.Count, noeuds.Count];
+            for (int p = 0;p < noeuds.Count; p++)
+            {
+                for (int f = 0; f < noeuds.Count; f++)
+                {
+                    matriceFloyd[p, f] = matrice_Adjacence[p, f];
+                }
+            }
+            for (int k =0; k < noeuds.Count; k++)
+            {
+                for (int i = 0; i < noeuds.Count; i++)
+                {
+                    for (int j=0; j < noeuds.Count; j++)
+                    {
+                        if (matriceFloyd[i,k] + matriceFloyd[k,j] < matriceFloyd[i,j])
+                        {
+                            matriceFloyd[i,j] = matriceFloyd[i,k] + matriceFloyd[k,j];
+                        }
+                    }
+                }
+            }
+            return matriceFloyd;
+        }
         public List<Noeud> Noeuds
         {
             get { return noeuds; }

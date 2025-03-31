@@ -8,23 +8,27 @@ namespace PSI_Livrable_1
 {
     public class Lien
     {
-        private Noeud noeud1;
-        private Noeud noeud2;
+        private Noeud noeudDepart;
+        private Noeud noeudArrive;
+        private int poids;
 
-        public Noeud Noeud1
+        public Noeud NoeudDepart
         {
-            get { return noeud1; }
+            get { return noeudDepart; }
         }
-
-        public Noeud Noeud2
+        public Noeud NoeudArrive
         {
-            get { return noeud2; }
+            get { return noeudArrive; }
         }
-
-        public Lien(Noeud Noeud1, Noeud Noeud2)
+        public int Poids
         {
-            noeud1 = Noeud1;
-            noeud2 = Noeud2;
+            get { return poids; }
+        }
+        public Lien(Noeud Noeud1, Noeud Noeud2, int poids)
+        {
+            noeudDepart = Noeud1;
+            noeudArrive = Noeud2;
+            this.poids = poids;
         }
     }
 }
