@@ -1,119 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PSI_Livrable_1
 {
-    public class Program
+    static class Program
     {
-        static void Main(string[] args)
+        [STAThread]
+        static void Main()
         {
-            try
+            string filePath = "MetroParis.csv";
+            List<Station> records = LoadCSV(filePath);
+
+            Dictionary<string, Noeud<int>> stationNodes = new Dictionary<string, Noeud<int>>();
+            Dictionary<Noeud<int>, Station> nodeToStation = new Dictionary<Noeud<int>, Station>();
+            Dictionary<Noeud<int>, List<string>> nodeLines = new Dictionary<Noeud<int>, List<string>>(); 
+            Dictionary<Noeud<int>, (double, double)> nodePositions = new Dictionary<Noeud<int>, (double, double)>(); 
+
+            Graphe<int> graph = new Graphe<int>();
+
+            foreach (var record in records)
             {
-                string[] lines = File.ReadAllLines("soc-karate.mtx");//lecture fichier
-                Graphe Association = new Graphe();
-                int i = 0;
-                while (lines[i][0] == '%') //ignorer les commentaires
+                if (stationNodes.ContainsKey(record.LibelleStation))
                 {
-                    i++;
-                }
-                int nbNoeuds = int.Parse(lines[i].Split(' ')[0]); //nombre de noeuds
-                int nbLiens = int.Parse(lines[i].Split(' ')[2]); //nombre de liens
-                for (int k = 1; k <= nbNoeuds; k++)//ajouter les noeuds de 0 a nbNoeuds-1
-                {
-                    Noeud n = new Noeud(k);
-                    Association.AjouterNoeud(n);
-                }
-                for (int j = i+1; j < nbLiens + i + 1; j++) //creation des liens a partir de la ligne i+1
-                {
-                    int n1 = int.Parse(lines[j].Split(' ')[0]); //noeud 1 du lien
-                    int p = 0; //verification de la position du noeud dans les noeuds existants
-                    while (Association.Noeuds[p].Id != n1)
-                    {
-                        p++;
-                    }
-                    int n2 = int.Parse(lines[j].Split(' ')[1]); //noeud 2 du lien
-                    int q = 0; //verification de la position du noeud dans les noeuds existants
-                    while (Association.Noeuds[q].Id != n2)
-                    {
-                        q++;
-                    }
-                    Association.AjouterLien(new Lien(Association.Noeuds[p], Association.Noeuds[q])); //creation du lien
-                }
-                Console.WriteLine("Liste d'adjacence : "); 
-                Association.AfficherListeAdjacence(); //affichage de la liste d'adjacence
-                Association.Generer_Matrice(); //generation de la matrice d'adjacence
-                Console.WriteLine("\nMatrice d'adjacence : "); // affichage de la matrice d'adjacence
-                for (int u = 0; u < Association.Noeuds.Count; u++)
-                {
-                    for (int v = 0; v < Association.Noeuds.Count; v++)
-                    {
-                        Console.Write(Association.Matrice_Adjacence[u, v] + " ");
-                    }
-                    Console.WriteLine();
-                }
-                List<Noeud> parcours_Large = Association.Parcours_Largeur(Association.Noeuds[0]); //parcours en largeur
-                Console.WriteLine("\nParcours en Largeur a partir du noeud 0: ");
-                foreach (Noeud n in parcours_Large)
-                {
-                    Console.Write(n.Id + " ");
-                }
-                List<Noeud> parcours_Prof = Association.Parcours_Profondeur(Association.Noeuds[0]); //parcours en Profondeur
-                Console.WriteLine("\nParcours en Profondeur a partir du noeud 0: ");
-                foreach (Noeud n in parcours_Prof)
-                {
-                    Console.Write(n.Id + " ");
-                }
-                
-                List<Noeud> cycle = Association.Cycle(); //recherche de cycle
-                if (cycle != null)
-                {
-                    Console.WriteLine("\nLe graphe contient un cycle :");
-                    foreach (Noeud n in cycle)
-                    {
-                        Console.Write(n.Id + " ");
-                    }
+                    nodeLines[stationNodes[record.LibelleStation]].Add(record.LibelleLine);
                 }
                 else
                 {
-                    Console.WriteLine("\nLe graphe ne contient pas de cycle ");
+                    var node = new Noeud<int>(record.ID, "Station");
+                    stationNodes[record.LibelleStation] = node;
+                    nodeToStation[node] = record;
+                    nodeLines[node] = new List<string> { record.LibelleLine }; 
+                    nodePositions[node] = (record.Longitude, record.Latitude); 
+                    graph.AjouterNoeud(node);
                 }
-                Console.WriteLine();
-                Application.Run(new Visualisation(Association));
             }
-            catch (FileNotFoundException f)
+
+            var groupedByLine = records.GroupBy(r => r.LibelleLine);
+            foreach (var group in groupedByLine)
             {
-                Console.WriteLine("le fichier n'existe pas " + f.Message);
+                var sorted = group.OrderBy(r => r.ID).ToList();
+                for (int i = 0; i < sorted.Count - 1; i++)
+                {
+                    var nodeStart = stationNodes[sorted[i].LibelleStation];
+                    var nodeEnd = stationNodes[sorted[i + 1].LibelleStation];
+
+                    double distance = HaversineDistance(sorted[i].Latitude, sorted[i].Longitude, sorted[i + 1].Latitude, sorted[i + 1].Longitude);
+                    int travelTime = (int)Math.Round(distance * 2 * 60); 
+
+                    graph.AjouterLien(new Lien<int>(nodeStart, nodeEnd, travelTime, group.Key));
+                    graph.AjouterLien(new Lien<int>(nodeEnd, nodeStart, travelTime, group.Key));
+                }
             }
-            catch (ArgumentException f)
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Visualisation<int>(graph, nodeToStation, nodePositions));
+        }
+
+        static List<Station> LoadCSV(string filePath)
+        {
+            List<Station> stations = new List<Station>();
+            using (var reader = new StreamReader(filePath))
             {
-                Console.WriteLine("Erreur " + f.Message);
+                string header = reader.ReadLine(); 
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+                    string[] parts = line.Split(',');
+
+                    int id = int.Parse(parts[0]);
+                    string libelleLine = parts[1];
+                    string libelleStation = parts[2];
+                    double longitude = double.Parse(parts[3], CultureInfo.InvariantCulture);
+                    double latitude = double.Parse(parts[4], CultureInfo.InvariantCulture);
+
+                    stations.Add(new Station(id, libelleLine, libelleStation, longitude, latitude));
+                }
             }
-            catch (PathTooLongException f)
-            {
-                Console.WriteLine("Erreur " + f.Message);
-            }
-            catch (DirectoryNotFoundException f)
-            {
-                Console.WriteLine("Erreur " + f.Message);
-            }
-            catch (UnauthorizedAccessException f)
-            {
-                Console.WriteLine("Erreur " + f.Message);
-            }
-            catch (NotSupportedException f)
-            {
-                Console.WriteLine("Erreur " + f.Message);
-            }
-            catch (IOException f)
-            {
-                Console.WriteLine("Erreur " + f.Message);
-            }
+            return stations;
+        }
+
+        static double HaversineDistance(double lat1, double lon1, double lat2, double lon2)
+        {
+            double R = 6371; 
+            double dLat = (lat2 - lat1) * Math.PI / 180;
+            double dLon = (lon2 - lon1) * Math.PI / 180;
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                       Math.Cos(lat1 * Math.PI / 180) * Math.Cos(lat2 * Math.PI / 180) *
+                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            return R * c; 
         }
     }
 }

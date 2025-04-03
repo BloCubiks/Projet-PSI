@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI_Livrable_1
 {
-    public class Noeud
+    public class Noeud<T>
     {
-        private int id;
+        public T Id { get; set; } 
+        public string Type { get; set; } 
 
-        public int Id
+        public Noeud(T id, string type)
         {
-            get { return id; }
-        }
-        public Noeud(int Id)
-        {
-            id = Id;
+            this.Id = id;
+            this.Type = type;
         }
     }
 }

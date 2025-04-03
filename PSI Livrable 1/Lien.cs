@@ -1,34 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PSI_Livrable_1
 {
-    public class Lien
+    public class Lien<T>
     {
-        private Noeud noeudDepart;
-        private Noeud noeudArrive;
-        private int poids;
+        public Noeud<T> NoeudDepart { get; }
+        public Noeud<T> NoeudArrive { get; }
+        public int Poids { get; }
+        /// <summary>
+        /// Ligne associée à cette liaison (null pour un transfert entre lignes)
+        /// </summary>
+        public string Line { get; }
 
-        public Noeud NoeudDepart
+        public Lien(Noeud<T> depart, Noeud<T> arrive, int poids, string line = null)
         {
-            get { return noeudDepart; }
-        }
-        public Noeud NoeudArrive
-        {
-            get { return noeudArrive; }
-        }
-        public int Poids
-        {
-            get { return poids; }
-        }
-        public Lien(Noeud Noeud1, Noeud Noeud2, int poids)
-        {
-            noeudDepart = Noeud1;
-            noeudArrive = Noeud2;
-            this.poids = poids;
+            NoeudDepart = depart;
+            NoeudArrive = arrive;
+            Poids = poids;
+            Line = line;
         }
     }
 }

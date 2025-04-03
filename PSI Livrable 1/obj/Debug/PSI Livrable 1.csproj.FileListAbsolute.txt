@@ -19,3 +19,12 @@ C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrabl
 C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.CoreCompileInputs.cache
 C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.exe
 C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.pdb
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.AssemblyReference.cache
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.CoreCompileInputs.cache
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.exe
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.pdb
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI Livrable 1.exe.config
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI Livrable 1.exe
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI Livrable 1.pdb
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_Livrable_1.Visualisation.resources
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.GenerateResource.cache

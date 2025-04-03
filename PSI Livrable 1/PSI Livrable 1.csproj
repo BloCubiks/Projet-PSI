@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Station.cs" />
     <Compile Include="Graphe.cs" />
     <Compile Include="Lien.cs" />
     <Compile Include="Noeud.cs" />
@@ -56,6 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Visualisation.resx">
+      <DependentUpon>Visualisation.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
