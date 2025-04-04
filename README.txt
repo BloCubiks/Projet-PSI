@@ -1,0 +1,1 @@
+ne pas prendre en compte le nom du sln et du dossier, c'est bien le 2eme livrable
