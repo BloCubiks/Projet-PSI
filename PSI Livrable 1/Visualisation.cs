@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace PSI_Livrable_1
+namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class Visualisation<T> : Form
     {
@@ -14,6 +14,7 @@ namespace PSI_Livrable_1
         // Variables pour la mise à l'échelle
         private double minLongitude, maxLongitude, minLatitude, maxLatitude;
         private double scaleX, scaleY;
+        private List<string> dejadessine;
 
         // Dictionnaire des couleurs pour chaque ligne
         private Dictionary<string, Color> lineColors;
@@ -32,6 +33,7 @@ namespace PSI_Livrable_1
 
             // Initialiser le dictionnaire des couleurs des lignes
             InitializeLineColors();
+            dejadessine = new List<string>();
         }
 
         private void InitializeScaling()
@@ -59,7 +61,7 @@ namespace PSI_Livrable_1
         {
             // Associer chaque ligne de métro à sa couleur conventionnelle
             lineColors = new Dictionary<string, Color>
-    {
+        {
         { "1", ColorTranslator.FromHtml("#FFCE00") },    // Ligne 1 - Jaune
         { "2", ColorTranslator.FromHtml("#0064B0") },    // Ligne 2 - Bleu
         { "3", ColorTranslator.FromHtml("#9F9825") },    // Ligne 3 - Vert
@@ -80,7 +82,7 @@ namespace PSI_Livrable_1
         { "16", ColorTranslator.FromHtml("#F3A4BA") },   // Ligne 16 - Rose
         { "17", ColorTranslator.FromHtml("#D5C900") },   // Ligne 17 - Jaune vif
         { "18", ColorTranslator.FromHtml("#00A88F") },   // Ligne 18 - Turquoise
-    };
+            };
         }
 
 
@@ -89,6 +91,7 @@ namespace PSI_Livrable_1
             // Recalculez les échelles chaque fois que la fenêtre est redimensionnée
             InitializeScaling();
             this.Invalidate();  // Redessiner le contenu de la fenêtre
+            dejadessine = new List<string>();
         }
         private float GetDistanceFromPointToLine(PointF lineStart, PointF lineEnd, PointF point)
         {
@@ -132,6 +135,7 @@ namespace PSI_Livrable_1
 
             foreach (var node in graph.Noeuds)
             {
+
                 var position = nodePositions[node];
 
                 // Normalisation des coordonnées en fonction de la mise à l'échelle
@@ -155,6 +159,10 @@ namespace PSI_Livrable_1
 
                 // Obtenir la couleur de la ligne
                 string lineName = lien.Line; // La ligne est associée au lien
+                if (lineName == null)
+                {
+                    lineName = "Transfert"; // Ligne de transfert
+                }
                 Color lineColor = lineColors.ContainsKey(lineName) ? lineColors[lineName] : Color.Gray; // Couleur par défaut (gris) si ligne inconnue
 
                 // Dessiner une ligne entre les stations avec la couleur correspondante
@@ -215,7 +223,11 @@ namespace PSI_Livrable_1
                 }
 
                 // Dessiner le texte de la station
-                g.DrawString(nodeToStation[node].LibelleStation, new Font("Arial", 6), Brushes.Black, textX, textY + offsetY);
+                if (!dejadessine.Contains(nodeToStation[node].LibelleStation))
+                {
+                    g.DrawString(nodeToStation[node].LibelleStation, new Font("Arial", 6), Brushes.Black, textX, textY + offsetY);
+                    dejadessine.Add(nodeToStation[node].LibelleStation);
+                }
 
                 // Marquer cette zone comme occupée
                 occupiedAreas.Add(textArea);

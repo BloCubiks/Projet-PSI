@@ -1,16 +1,24 @@
 ﻿using System;
 
-namespace PSI_Livrable_1
+namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class Noeud<T>
     {
-        public T Id { get; set; } 
-        public string Type { get; set; } 
+        private int id;
+        private T type;
 
-        public Noeud(T id, string type)
+        public int Id
         {
-            this.Id = id;
-            this.Type = type;
+            get { return id; }
+        }
+        public T Type
+        {
+            get { return type; }
+        }
+        public Noeud(int Id, T Type)
+        {
+            this.id = Id;
+            this.type = Type;
         }
     }
 }

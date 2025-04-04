@@ -1,67 +1,365 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
-namespace PSI_Livrable_1
+namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     static class Program
     {
-        [STAThread]
+        
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            // Initialisation de la liste des stations et du graphe
             string filePath = "MetroParis.csv";
-            List<Station> records = LoadCSV(filePath);
+            List<Station> stations = LireCSV(filePath);
+            Dictionary<string, List<Station>> Lignes = new Dictionary<string, List<Station>>(); 
+            Dictionary<string, int> doublons = new Dictionary<string, int>();
+            Dictionary<Noeud<Station>, Station> nodeToStation = new Dictionary<Noeud<Station>, Station>();
+            Dictionary<Noeud<Station>, (double, double)> nodePositions = new Dictionary<Noeud<Station>, (double, double)>();
 
-            Dictionary<string, Noeud<int>> stationNodes = new Dictionary<string, Noeud<int>>();
-            Dictionary<Noeud<int>, Station> nodeToStation = new Dictionary<Noeud<int>, Station>();
-            Dictionary<Noeud<int>, List<string>> nodeLines = new Dictionary<Noeud<int>, List<string>>(); 
-            Dictionary<Noeud<int>, (double, double)> nodePositions = new Dictionary<Noeud<int>, (double, double)>(); 
+            Graphe<Station> graph = new Graphe<Station>();
 
-            Graphe<int> graph = new Graphe<int>();
-
-            foreach (var record in records)
+            foreach (var station in stations)
             {
-                if (stationNodes.ContainsKey(record.LibelleStation))
+                Noeud<Station> noeud = new Noeud<Station>(station.IdStation, station);
+                graph.AjouterNoeud(noeud);
+                
+                //gestion d'une station presente dans 2 lignes
+                if (doublons.ContainsKey(noeud.Type.LibelleStation) && doublons[noeud.Type.LibelleStation] != noeud.Id)
                 {
-                    nodeLines[stationNodes[record.LibelleStation]].Add(record.LibelleLine);
+                    graph.AjouterLien(new Lien<Station>(noeud, graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], 1));
+                    graph.AjouterLien(new Lien<Station>(graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], noeud, 1));
+                }
+                doublons[station.LibelleStation] = noeud.Id;
+
+                nodeToStation[noeud] = station;
+                nodePositions[noeud] = (station.Longitude, station.Latitude);
+                if (!Lignes.ContainsKey(station.LibelleLine))
+                {
+                    Lignes[station.LibelleLine] = new List<Station>();
+                }
+                if (!Lignes[station.LibelleLine].Contains(station))
+                {
+                    Lignes[station.LibelleLine].Add(station);
+                }
+            }
+            var groupedByLine = graph.Noeuds.GroupBy(r => r.Type.LibelleLine);
+            foreach (var group in groupedByLine)
+            {
+                var sorted = group.OrderBy(r => r.Id).ToList();
+                for (int i = 0; i < sorted.Count - 1; i++)
+                {
+                    Noeud<Station> nodeStart = sorted[i];
+                    Noeud<Station> nodeEnd = sorted[i + 1];
+
+                    double distance = Graphe<Station>.HaversineDistance(sorted[i].Type.Latitude, sorted[i].Type.Longitude, sorted[i + 1].Type.Latitude, sorted[i + 1].Type.Longitude);
+                    int travelTime = (int)Math.Round(distance*2);
+                    graph.AjouterLien(new Lien<Station>(nodeStart, nodeEnd, travelTime, group.Key));
+                    graph.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, group.Key));
+                }
+            }
+            // fin de l'initialisation du graphe
+
+            //menu
+            int choix = 0;
+            bool fin = false;
+            while (!fin)
+            {
+                graph.Generer_Matrice();
+                Console.WriteLine("\r\n                       __ \r\n                      (_ )\r\n██╗     ██╗██╗   ██╗   |/   ██╗███╗   ██╗        ██████╗  █████╗ ██████╗ ██╗███████╗\r\n██║     ██║██║   ██║        ██║████╗  ██║        ██╔══██╗██╔══██╗██╔══██╗██║██╔════╝\r\n██║     ██║██║   ██║        ██║██╔██╗ ██║        ██████╔╝███████║██████╔╝██║███████╗\r\n██║     ██║╚██╗ ██╔╝        ██║██║╚██╗██║        ██╔═══╝ ██╔══██║██╔══██╗██║╚════██║\r\n███████╗██║ ╚████╔╝         ██║██║ ╚████║        ██║     ██║  ██║██║  ██║██║███████║\r\n╚══════╝╚═╝  ╚═══╝          ╚═╝╚═╝  ╚═══╝        ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝\r\n                                                                                    \r\n");
+                Console.WriteLine("Bienvenue dans la démonstration de l'application Liv'In Paris !\r\n");
+                Console.WriteLine("Veuillez choisir une option :");
+                Console.WriteLine("1. Visualiser le plan metro");
+                Console.WriteLine("2. Afficher la liste d'adjacence d'un sommet");
+                Console.WriteLine("3. Afficher la matrice d'adjacence");
+                Console.WriteLine("4. Utiliser l'algorithme de Dijkstra");
+                Console.WriteLine("5. Utiliser l'algorithme de Bellman-Ford");
+                Console.WriteLine("6. Utiliser l'algorithme de Floyd-Warshall");
+                Console.WriteLine("7. Se connecter à la base de donnée");
+                Console.WriteLine("8. Quitter l'application");
+                Console.Write("Entrez votre choix : ");
+                string input = Console.ReadLine();
+                if (!int.TryParse(input, out choix) || choix < 1 || choix > 8)
+                {
+                    Console.WriteLine("Choix invalide. Veuillez réessayer.");
                 }
                 else
                 {
-                    var node = new Noeud<int>(record.ID, "Station");
-                    stationNodes[record.LibelleStation] = node;
-                    nodeToStation[node] = record;
-                    nodeLines[node] = new List<string> { record.LibelleLine }; 
-                    nodePositions[node] = (record.Longitude, record.Latitude); 
-                    graph.AjouterNoeud(node);
-                }
-            }
+                    switch (choix)
+                    {
+                        case 1:
+                            // Visualiser le plan metro
+                            Application.Run(new Visualisation<Station>(graph, nodeToStation, nodePositions));
+                            Console.WriteLine("Fermez le plan pour continuer.\r\n");
+                            break;
+                        case 2:
+                            // Afficher la liste d'adjacence d'un sommet
+                            bool trouve = false;
+                            Console.Write("Entrez le nom de la station (sans faute) : ");
+                            string nomStation = Console.ReadLine();
+                            foreach (var station in graph.Noeuds)
+                            {
+                                if (station.Type.LibelleStation.Equals(nomStation))
+                                {
+                                    trouve = true;
+                                    Console.WriteLine($"\nListe d'adjacence pour la station {nomStation} sur la ligne {station.Type.LibelleLine}:");
+                                    foreach (var adjacent in graph.Liste_Adjacence[station])
+                                    {
+                                        Lien<Station> lienStation = graph.Rechercher_Lien(station, adjacent);
+                                        Console.WriteLine($"- {lienStation.NoeudArrive.Type.LibelleStation} (Ligne: {lienStation.Line}, Temps: {lienStation.Poids} minutes)");
+                                    }
+                                }
+                            }
+                            if (!trouve)
+                            {
+                                Console.WriteLine("Station non trouvée dans le graphe.");
+                            }
+                            Console.WriteLine("Appuyez sur une touche pour continuer...");
+                            Console.ReadKey();
+                            break;
+                        case 3:
+                            // Afficher la matrice d'adjacence
+                            Console.WriteLine("Matrice d'adjacence :");
+                            for (int i = 0; i < graph.Matrice_Adjacence.GetLength(0); i++)
+                            {
+                                for (int j = 0; j < graph.Matrice_Adjacence.GetLength(1); j++)
+                                {
+                                    if (graph.Matrice_Adjacence[i, j] != int.MaxValue)
+                                    {
+                                        Console.Write(graph.Matrice_Adjacence[i, j] + " ");
+                                    }
+                                    else
+                                    {
+                                        Console.Write("INF ");
+                                    }
+                                }
+                                Console.WriteLine();
+                            }
+                            Console.WriteLine("Appuyez sur une touche pour continuer...");
+                            Console.ReadKey();
+                            break;
+                        case 4:
+                            // Utiliser l'algorithme de Dijkstra
+                            bool trouveS = false;
+                            Console.Write("Entrez le nom de la station de départ (sans faute) : ");
+                            string nomStationD = Console.ReadLine();
+                            foreach (var station in graph.Noeuds)
+                            {
+                                if (!trouveS && station.Type.LibelleStation.Equals(nomStationD))
+                                {
+                                    trouveS = true;
+                                    int[,] distances = graph.Dijkstra(station);
+                                    Console.WriteLine($"\nDistances depuis la station {nomStationD} :");
+                                    for (int i = 0; i < distances.GetLength(0); i++)
+                                    {
+                                        if (distances[graph.Noeuds[i].Id - 1, 0] != -1)
+                                        {
+                                            Console.WriteLine($"- Station {graph.Noeuds[i].Type.LibelleStation} : {distances[graph.Noeuds[i].Id - 1, 0]} minutes");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($"- Station {graph.Noeuds[i].Type.LibelleStation} : Inaccessible");
+                                        }
+                                    }
 
-            var groupedByLine = records.GroupBy(r => r.LibelleLine);
-            foreach (var group in groupedByLine)
+                                    bool trouveZ = false;
+                                    Console.Write("Entrez le nom de la station d'arrivée (sans faute) : ");
+                                    string nomStationA = Console.ReadLine();
+                                    Graphe<Station> graphD = new Graphe<Station>();
+                                    List<Station> Parcours = new List<Station>();
+
+                                    foreach (var noeud in graph.Noeuds)
+                                    {
+                                        if (!trouveZ && noeud.Type.LibelleStation.Equals(nomStationA))
+                                        {
+                                            Noeud<Station> precedent = noeud;
+                                            trouveZ = true;
+                                            Parcours.Add(precedent.Type);
+                                            while (precedent.Id != station.Id)
+                                            {
+                                                precedent = graph.Noeuds[distances[precedent.Id - 1, 1]];
+                                                Parcours.Add(precedent.Type);
+                                            }
+                                        }
+                                    }
+
+                                    Dictionary<Noeud<Station>, Station> nodeToStationD = new Dictionary<Noeud<Station>, Station>();
+                                    Dictionary<Noeud<Station>, (double, double)> nodePositionsD = new Dictionary<Noeud<Station>, (double, double)>();
+
+                                    // Ajouter les nœuds du parcours au nouveau graphe
+                                    foreach (var etape in Parcours)
+                                    {
+                                        Noeud<Station> noeud = new Noeud<Station>(etape.IdStation, etape);
+                                        graphD.AjouterNoeud(noeud);
+                                        nodeToStationD[noeud] = etape;
+                                        nodePositionsD[noeud] = (etape.Longitude, etape.Latitude);
+                                    }
+
+                                    // Ajouter les liens entre les nœuds du parcours
+                                    for (int i = 0; i < Parcours.Count - 1; i++)
+                                    {
+                                        Noeud<Station> nodeStart = graphD.Noeuds[i];
+                                        Noeud<Station> nodeEnd = graphD.Noeuds[i + 1];
+
+                                        double distance = Graphe<Station>.HaversineDistance(Parcours[i].Latitude, Parcours[i].Longitude, Parcours[i + 1].Latitude, Parcours[i + 1].Longitude);
+                                        int travelTime = (int)Math.Round(distance * 2);
+                                        graphD.AjouterLien(new Lien<Station>(nodeStart, nodeEnd, travelTime, Parcours[i].LibelleLine));
+                                        graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
+                                    }
+
+                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD));
+                                    Console.WriteLine("Fermez le plan pour continuer.\r\n");
+                                    if (!trouveZ)
+                                    {
+                                        Console.WriteLine("Station d'arrivée non trouvée dans le graphe.");
+                                    }
+                                }
+                            }
+                            if (!trouveS)
+                            {
+                                Console.WriteLine("Station de départ non trouvée dans le graphe.");
+                            }
+                            
+                            Console.WriteLine("Appuyez sur une touche pour continuer...");
+                            Console.ReadKey();
+                            break;
+                        case 5:
+                            // Utiliser l'algorithme de Bellman-Ford
+                            // Utiliser l'algorithme de Dijkstra
+                            bool trouveB = false;
+                            Console.Write("Entrez le nom de la station de départ (sans faute) : ");
+                            string nomStationF = Console.ReadLine();
+                            foreach (var station in graph.Noeuds)
+                            {
+                                if (!trouveB && station.Type.LibelleStation.Equals(nomStationF))
+                                {
+                                    trouveS = true;
+                                    int[,] distances = graph.Bellman_Ford(station);
+                                    Console.WriteLine($"\nDistances depuis la station {nomStationF} :");
+                                    for (int i = 0; i < distances.GetLength(0); i++)
+                                    {
+                                        if (distances[graph.Noeuds[i].Id - 1, 0] != -1)
+                                        {
+                                            Console.WriteLine($"- Station {graph.Noeuds[i].Type.LibelleStation} : {distances[graph.Noeuds[i].Id - 1, 0]} minutes");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($"- Station {graph.Noeuds[i].Type.LibelleStation} : Inaccessible");
+                                        }
+                                    }
+
+                                    bool trouveZ = false;
+                                    Console.Write("Entrez le nom de la station d'arrivée (sans faute) : ");
+                                    string nomStationA = Console.ReadLine();
+                                    Graphe<Station> graphD = new Graphe<Station>();
+                                    List<Station> Parcours = new List<Station>();
+
+                                    foreach (var noeud in graph.Noeuds)
+                                    {
+                                        if (!trouveZ && noeud.Type.LibelleStation.Equals(nomStationA))
+                                        {
+                                            Noeud<Station> precedent = noeud;
+                                            trouveZ = true;
+                                            Parcours.Add(precedent.Type);
+                                            while (precedent.Id != station.Id)
+                                            {
+                                                precedent = graph.Noeuds[distances[precedent.Id - 1, 1]];
+                                                Parcours.Add(precedent.Type);
+                                            }
+                                        }
+                                    }
+
+                                    Dictionary<Noeud<Station>, Station> nodeToStationD = new Dictionary<Noeud<Station>, Station>();
+                                    Dictionary<Noeud<Station>, (double, double)> nodePositionsD = new Dictionary<Noeud<Station>, (double, double)>();
+
+                                    // Ajouter les nœuds du parcours au nouveau graphe
+                                    foreach (var etape in Parcours)
+                                    {
+                                        Noeud<Station> noeud = new Noeud<Station>(etape.IdStation, etape);
+                                        graphD.AjouterNoeud(noeud);
+                                        nodeToStationD[noeud] = etape;
+                                        nodePositionsD[noeud] = (etape.Longitude, etape.Latitude);
+                                    }
+
+                                    // Ajouter les liens entre les nœuds du parcours
+                                    for (int i = 0; i < Parcours.Count - 1; i++)
+                                    {
+                                        Noeud<Station> nodeStart = graphD.Noeuds[i];
+                                        Noeud<Station> nodeEnd = graphD.Noeuds[i + 1];
+
+                                        double distance = Graphe<Station>.HaversineDistance(Parcours[i].Latitude, Parcours[i].Longitude, Parcours[i + 1].Latitude, Parcours[i + 1].Longitude);
+                                        int travelTime = (int)Math.Round(distance * 2);
+                                        graphD.AjouterLien(new Lien<Station>(nodeStart, nodeEnd, travelTime, Parcours[i].LibelleLine));
+                                        graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
+                                    }
+
+                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD));
+                                    Console.WriteLine("Fermez le plan pour continuer.\r\n");
+                                    if (!trouveZ)
+                                    {
+                                        Console.WriteLine("Station d'arrivée non trouvée dans le graphe.");
+                                    }
+                                }
+                            }
+                            if (!trouveB)
+                            {
+                                Console.WriteLine("Station de départ non trouvée dans le graphe.");
+                            }
+
+                            Console.WriteLine("Appuyez sur une touche pour continuer...");
+                            Console.ReadKey();
+                            break;
+                        case 6:
+                            // Utiliser l'algorithme de Floyd-Warshall
+                            Console.WriteLine("Matrice de distances (Floyd-Warshall) :");
+                            int[,] distancesFW = graph.Floyd_Warshall();
+                            for (int i = 0; i < graph.Noeuds.Count; i++)
+                            {
+                                for (int j = 0; j < graph.Noeuds.Count; j++)
+                                {
+                                    if (distancesFW[i, j] != int.MaxValue)
+                                    {
+                                        Console.Write(distancesFW[i, j] + " ");
+                                    }
+                                    else
+                                    {
+                                        Console.Write("INF ");
+                                    }
+                                }
+                                Console.WriteLine();
+                            }
+                            Console.WriteLine("Appuyez sur une touche pour continuer...");
+                            Console.ReadKey();
+                            break;
+                        case 7:
+                            // Se connecter à la base de donnée
+                            break;
+                        case 8:
+                            fin = true;
+                            break;
+                    }
+                }
+                Console.Clear();
+            }
+            while (choix < 1 || choix > 8)
             {
-                var sorted = group.OrderBy(r => r.ID).ToList();
-                for (int i = 0; i < sorted.Count - 1; i++)
+                Console.Write("Entrez votre choix : ");
+                string input = Console.ReadLine();
+                if (!int.TryParse(input, out choix) || choix < 1 || choix > 8)
                 {
-                    var nodeStart = stationNodes[sorted[i].LibelleStation];
-                    var nodeEnd = stationNodes[sorted[i + 1].LibelleStation];
-
-                    double distance = HaversineDistance(sorted[i].Latitude, sorted[i].Longitude, sorted[i + 1].Latitude, sorted[i + 1].Longitude);
-                    int travelTime = (int)Math.Round(distance * 2 * 60); 
-
-                    graph.AjouterLien(new Lien<int>(nodeStart, nodeEnd, travelTime, group.Key));
-                    graph.AjouterLien(new Lien<int>(nodeEnd, nodeStart, travelTime, group.Key));
+                    Console.WriteLine("Choix invalide. Veuillez réessayer.");
                 }
             }
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Visualisation<int>(graph, nodeToStation, nodePositions));
         }
 
-        static List<Station> LoadCSV(string filePath)
+        static List<Station> LireCSV(string filePath)
         {
             List<Station> stations = new List<Station>();
             using (var reader = new StreamReader(filePath))
@@ -84,18 +382,6 @@ namespace PSI_Livrable_1
                 }
             }
             return stations;
-        }
-
-        static double HaversineDistance(double lat1, double lon1, double lat2, double lon2)
-        {
-            double R = 6371; 
-            double dLat = (lat2 - lat1) * Math.PI / 180;
-            double dLon = (lon2 - lon1) * Math.PI / 180;
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(lat1 * Math.PI / 180) * Math.Cos(lat2 * Math.PI / 180) *
-                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            return R * c; 
         }
     }
 }

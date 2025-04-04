@@ -1,31 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PSI_Livrable_1
+namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class Station
     {
-        public int ID { get; set; }
-        public string LibelleLine { get; set; }
-        public string LibelleStation { get; set; }
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
-        public List<string> Lignes { get; set; } 
+        private int idStation;
+        private string libelleStation;
+        private string libelleLine;
+        private double longitude;
+        private double latitude;
 
-        public Station(int id, string libelleLine, string libelleStation, double longitude, double latitude)
+        public int IdStation
         {
-            ID = id;
-            LibelleLine = libelleLine;
-            LibelleStation = libelleStation;
-            Longitude = longitude;
-            Latitude = latitude;
-            Lignes = new List<string> { libelleLine };
+            get { return idStation; }
         }
-
-        public void AjouterLigne(string ligne)
+        public string LibelleStation
         {
-            if (!Lignes.Contains(ligne))
-                Lignes.Add(ligne);
+            get { return libelleStation; }
+        }
+        public string LibelleLine
+        {
+            get { return libelleLine; }
+        }
+        public double Longitude
+        {
+            get { return longitude; }
+        }
+        public double Latitude
+        {
+            get { return latitude; }
+        }
+        public Station(int Id, string LibelleLine, string LibelleStation, double Longitude, double Latitude)
+        {
+            idStation = Id;
+            libelleStation = LibelleStation;
+            libelleLine = LibelleLine;
+            longitude = Longitude;
+            latitude = Latitude;
         }
     }
 }

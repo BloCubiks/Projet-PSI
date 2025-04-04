@@ -28,3 +28,5 @@ C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI
 C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\PSI Livrable 1.pdb
 C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_Livrable_1.Visualisation.resources
 C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.GenerateResource.cache
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.csproj.GenerateResource.cache
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE.Visualisation.resources
