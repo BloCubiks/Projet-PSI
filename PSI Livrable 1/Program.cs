@@ -341,7 +341,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                         case 7:
                             // Se connecter à la base de donnée
                             Console.WriteLine("Connexion à la base de données...");
-                            BDD.Appelle_BDD();
+                            BDD.Appelle_BDD(graph);
                             break;
                         case 8:
                             fin = true;

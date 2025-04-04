@@ -180,18 +180,21 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 if (ponderation)
                 {
                     PointF midPoint = new PointF((start.X + end.X) / 2, (start.Y + end.Y) / 2);
-                    if (lien.Poids > 0) g.DrawString(lien.Poids.ToString(), new Font("Arial", 12), Brushes.Black, midPoint);
-                    if (!drawnLines.Contains(lineName))
+                    if (lien.Poids > 0)
                     {
-                        PointF labelPosition = new PointF((start.X + end.X) / 2, (start.Y + end.Y) / 2);
-                        labelPosition.Y -= 15;
-                        Color textColor = lineColors.ContainsKey(lineName) ? lineColors[lineName] : Color.Gray;
-                        g.DrawString("Ligne : " + lineName, new Font("Arial", 10, FontStyle.Bold), new SolidBrush(textColor), labelPosition);
-                        drawnLines.Add(lineName);
+                        g.DrawString(lien.Poids.ToString(), new Font("Arial", 12), Brushes.Black, midPoint);
+                        if (!drawnLines.Contains(lineName))
+                        {
+                            PointF labelPosition = new PointF((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+                            labelPosition.Y -= 15;
+                            Color textColor = lineColors.ContainsKey(lineName) ? lineColors[lineName] : Color.Gray;
+                            g.DrawString("Ligne : " + lineName, new Font("Arial", 10, FontStyle.Bold), new SolidBrush(textColor), labelPosition);
+                            drawnLines.Add(lineName);
+                        }
                     }
                 }
                 // Dessiner le nom de la ligne une seule fois
-                
+
             }
 
             // 3. Dessiner les stations sous forme de cercles (ou autres formes)

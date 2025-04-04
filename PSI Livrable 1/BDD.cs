@@ -10,12 +10,20 @@ using System.IO.Pipelines;
 using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 using System;
+using Google.Protobuf.WellKnownTypes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class BDD
     {
-        public static void Appelle_BDD()
+        public static void Appelle_BDD(Graphe<Station> graph)
         {
             string choix = "";
             string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
@@ -56,7 +64,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                         ModuleStatistique(command, reader);
                         break;
                     case "6":
-                        Demo(command, reader);
+                        Demo(command, reader,graph);
                         break;
                     case "0":
                         Console.WriteLine("Au revoir !");
@@ -71,7 +79,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             connection.Close();
         }
 
-        static void Demo(MySqlCommand command, MySqlDataReader reader)
+        static void Demo(MySqlCommand command, MySqlDataReader reader, Graphe <Station> graph)
         {
             Console.Clear();
 
@@ -114,7 +122,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.WriteLine("Plat créé !");
             Read(command, reader, "SELECT * FROM Plat;");
 
-            // Création d'une commande
+            // Création d'une commande avec jointure pour afficher les lignes de métro
             Console.WriteLine("Création d'une commande...");
             System.Threading.Thread.Sleep(500);
             Console.Clear();
@@ -125,6 +133,80 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 "VALUES ('2024-04-01', 'Rue de la République, 12', 9, 4, 3, NULL);";
             command.ExecuteNonQuery();
             Console.WriteLine("Commande créée !");
+
+            // Affichage des lignes de métro du cuisinier et du particulier liés à la commande
+            command.CommandText =
+                "SELECT c.NomC, c.PrenomC, c.MetroC, p.NomP, p.PrenomP, p.MetroP " +
+                "FROM Commande cmd " +
+                "JOIN Cuisinier c ON cmd.NumeroCuisinier = c.NumeroCuisinier " +
+                "JOIN Particulier p ON cmd.NumeroParticulier = p.NumeroParticulier " +
+                "WHERE cmd.IDCommande = LAST_INSERT_ID();";
+
+            reader = command.ExecuteReader();
+            Console.WriteLine(" Informations des lignes de métro associées à la commande :");
+            while (reader.Read())
+            {
+                Console.WriteLine($" Cuisinier : {reader["NomC"]} {reader["PrenomC"]} - Métro : {reader["MetroC"]}");
+                Console.WriteLine($" Particulier : {reader["NomP"]} {reader["PrenomP"]} - Métro : {reader["MetroP"]}");
+            }
+            bool trouveS = false;
+            foreach (var station in graph.Noeuds)
+            {
+                if (!trouveS && station.Type.LibelleStation.Equals(reader["MetroC"]))
+                {
+                    trouveS = true;
+                    int[,] distances = graph.Dijkstra(station);
+                    bool trouveZ = false;
+                    Graphe<Station> graphD = new Graphe<Station>();
+                    List<Station> Parcours = new List<Station>();
+
+                    foreach (var noeud in graph.Noeuds)
+                    {
+                        if (!trouveZ && noeud.Type.LibelleStation.Equals(reader["MetroP"]))
+                        {
+                            Noeud<Station> precedent = noeud;
+                            trouveZ = true;
+                            Parcours.Add(precedent.Type);
+                            while (precedent.Id != station.Id)
+                            {
+                                precedent = graph.Noeuds[distances[precedent.Id - 1, 1]];
+                                Parcours.Add(precedent.Type);
+                            }
+                        }
+                    }
+
+                    Dictionary<Noeud<Station>, Station> nodeToStationD = new Dictionary<Noeud<Station>, Station>();
+                    Dictionary<Noeud<Station>, (double, double)> nodePositionsD = new Dictionary<Noeud<Station>, (double, double)>();
+
+                    // Ajouter les nœuds du parcours au nouveau graphe
+                    foreach (var etape in Parcours)
+                    {
+                        Noeud<Station> noeud = new Noeud<Station>(etape.IdStation, etape);
+                        graphD.AjouterNoeud(noeud);
+                        nodeToStationD[noeud] = etape;
+                        nodePositionsD[noeud] = (etape.Longitude, etape.Latitude);
+                    }
+
+                    // Ajouter les liens entre les nœuds du parcours
+                    for (int i = 0; i < Parcours.Count - 1; i++)
+                    {
+                        Noeud<Station> nodeStart = graphD.Noeuds[i];
+                        Noeud<Station> nodeEnd = graphD.Noeuds[i + 1];
+
+                        double distance = Graphe<Station>.HaversineDistance(Parcours[i].Latitude, Parcours[i].Longitude, Parcours[i + 1].Latitude, Parcours[i + 1].Longitude);
+                        int travelTime = (int)Math.Round(distance * 2);
+                        graphD.AjouterLien(new Lien<Station>(nodeStart, nodeEnd, travelTime, Parcours[i].LibelleLine));
+                        graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
+                    }
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD, true));
+                }
+            }
+            reader.Close();
+            Console.WriteLine("\nAppuyez sur une touche pour continuer...");
+            Console.ReadKey();
+
             Read(command, reader, "SELECT * FROM Commande;");
 
             // Ajout de plats à la commande
@@ -165,6 +247,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.WriteLine("Particulier supprimé !");
             Read(command, reader, "SELECT * FROM Particulier WHERE NumeroParticulier = 3;");
         }
+
         static void ModuleStatistique(MySqlCommand command, MySqlDataReader reader)
         {
             Console.Clear();
