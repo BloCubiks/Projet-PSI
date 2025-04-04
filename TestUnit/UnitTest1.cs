@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     [TestClass]
     public class UnitTestGraphe

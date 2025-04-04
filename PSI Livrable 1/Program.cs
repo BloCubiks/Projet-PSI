@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     static class Program
     {
@@ -34,8 +34,8 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 //gestion d'une station presente dans 2 lignes
                 if (doublons.ContainsKey(noeud.Type.LibelleStation) && doublons[noeud.Type.LibelleStation] != noeud.Id)
                 {
-                    graph.AjouterLien(new Lien<Station>(noeud, graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], 1));
-                    graph.AjouterLien(new Lien<Station>(graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], noeud, 1));
+                    graph.AjouterLien(new Lien<Station>(noeud, graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], 2));
+                    graph.AjouterLien(new Lien<Station>(graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], noeud, 2));
                 }
                 doublons[station.LibelleStation] = noeud.Id;
 
@@ -73,7 +73,7 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
             while (!fin)
             {
                 graph.Generer_Matrice();
-                Console.WriteLine("\r\n                       __ \r\n                      (_ )\r\n██╗     ██╗██╗   ██╗   |/   ██╗███╗   ██╗        ██████╗  █████╗ ██████╗ ██╗███████╗\r\n██║     ██║██║   ██║        ██║████╗  ██║        ██╔══██╗██╔══██╗██╔══██╗██║██╔════╝\r\n██║     ██║██║   ██║        ██║██╔██╗ ██║        ██████╔╝███████║██████╔╝██║███████╗\r\n██║     ██║╚██╗ ██╔╝        ██║██║╚██╗██║        ██╔═══╝ ██╔══██║██╔══██╗██║╚════██║\r\n███████╗██║ ╚████╔╝         ██║██║ ╚████║        ██║     ██║  ██║██║  ██║██║███████║\r\n╚══════╝╚═╝  ╚═══╝          ╚═╝╚═╝  ╚═══╝        ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝\r\n                                                                                    \r\n");
+                Console.WriteLine("                       __ \r\n                      (_ )\r\n██╗     ██╗██╗   ██╗   |/   ██╗███╗   ██╗        ██████╗  █████╗ ██████╗ ██╗███████╗\r\n██║     ██║██║   ██║        ██║████╗  ██║        ██╔══██╗██╔══██╗██╔══██╗██║██╔════╝\r\n██║     ██║██║   ██║        ██║██╔██╗ ██║        ██████╔╝███████║██████╔╝██║███████╗\r\n██║     ██║╚██╗ ██╔╝        ██║██║╚██╗██║        ██╔═══╝ ██╔══██║██╔══██╗██║╚════██║\r\n███████╗██║ ╚████╔╝         ██║██║ ╚████║        ██║     ██║  ██║██║  ██║██║███████║\r\n╚══════╝╚═╝  ╚═══╝          ╚═╝╚═╝  ╚═══╝        ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝\r\n                                                                                    \r\n");
                 Console.WriteLine("Bienvenue dans la démonstration de l'application Liv'In Paris !\r\n");
                 Console.WriteLine("Veuillez choisir une option :");
                 Console.WriteLine("1. Visualiser le plan metro");
@@ -214,7 +214,7 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
                                         graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
                                     }
 
-                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD));
+                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD,true));
                                     Console.WriteLine("Fermez le plan pour continuer.\r\n");
                                     if (!trouveZ)
                                     {
@@ -300,7 +300,7 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
                                         graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
                                     }
 
-                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD));
+                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD, true));
                                     Console.WriteLine("Fermez le plan pour continuer.\r\n");
                                     if (!trouveZ)
                                     {
@@ -340,6 +340,8 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             break;
                         case 7:
                             // Se connecter à la base de donnée
+                            Console.WriteLine("Connexion à la base de données...");
+                            BDD.Appelle_BDD();
                             break;
                         case 8:
                             fin = true;

@@ -53,12 +53,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PSI Livrable 1\PSI Livrable 1.csproj">
+    <ProjectReference Include="..\PSI Livrable 1\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj">
       <Project>{d2c99470-223d-444e-bbaa-4e8cef3f5b70}</Project>
-      <Name>PSI Livrable 1</Name>
+      <Name>PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

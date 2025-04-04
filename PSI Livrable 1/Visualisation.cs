@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class Visualisation<T> : Form
     {
         private Graphe<T> graph;
         private Dictionary<Noeud<T>, Station> nodeToStation;
         private Dictionary<Noeud<T>, (double, double)> nodePositions;
+        private bool ponderation;
 
         // Variables pour la mise à l'échelle
         private double minLongitude, maxLongitude, minLatitude, maxLatitude;
@@ -19,12 +20,15 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
         // Dictionnaire des couleurs pour chaque ligne
         private Dictionary<string, Color> lineColors;
 
-        public Visualisation(Graphe<T> graph, Dictionary<Noeud<T>, Station> nodeToStation, Dictionary<Noeud<T>, (double, double)> nodePositions)
+        // Dictionnaire pour suivre les lignes déjà dessinées
+        private HashSet<string> drawnLines;
+
+        public Visualisation(Graphe<T> graph, Dictionary<Noeud<T>, Station> nodeToStation, Dictionary<Noeud<T>, (double, double)> nodePositions, bool ponderation=false)
         {
             this.graph = graph;
             this.nodeToStation = nodeToStation;
             this.nodePositions = nodePositions;
-
+            this.ponderation = ponderation;
             this.Text = "Visualisation du Graphe";
             this.Size = new Size(800, 600);
             this.MinimumSize = new Size(500, 400);  // Optionnel: définir une taille minimale pour la fenêtre
@@ -34,6 +38,8 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
             // Initialiser le dictionnaire des couleurs des lignes
             InitializeLineColors();
             dejadessine = new List<string>();
+            drawnLines = new HashSet<string>();
+
         }
 
         private void InitializeScaling()
@@ -53,8 +59,8 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
 
             // Calculer l'échelle en fonction des coordonnées
-            scaleX = (this.ClientSize.Width - 50) / (maxLongitude - minLongitude);  // 50 pour une marge
-            scaleY = (this.ClientSize.Height - 50) / (maxLatitude - minLatitude);    // 50 pour une marge
+            scaleX = (this.ClientSize.Width - 100) / (maxLongitude - minLongitude);  // 50 pour une marge
+            scaleY = (this.ClientSize.Height - 100) / (maxLatitude - minLatitude);    // 50 pour une marge
         }
 
         private void InitializeLineColors()
@@ -91,7 +97,8 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
             // Recalculez les échelles chaque fois que la fenêtre est redimensionnée
             InitializeScaling();
             this.Invalidate();  // Redessiner le contenu de la fenêtre
-            dejadessine = new List<string>();
+            dejadessine.Clear();
+            drawnLines.Clear();
         }
         private float GetDistanceFromPointToLine(PointF lineStart, PointF lineEnd, PointF point)
         {
@@ -139,9 +146,9 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 var position = nodePositions[node];
 
                 // Normalisation des coordonnées en fonction de la mise à l'échelle
-                float x = (float)((position.Item1 - minLongitude) * scaleX);
+                float x = (float)((position.Item1 - minLongitude) * scaleX)+50;
                 // Inverser l'axe Y en soustrayant la position Y de la hauteur totale de la fenêtre
-                float y = (float)((maxLatitude - position.Item2) * scaleY);  // Inverser la position Y ici
+                float y = (float)((maxLatitude - position.Item2) * scaleY)+50;  // Inverser la position Y ici
 
                 scaledPositions[node] = new PointF(x, y);
             }
@@ -166,10 +173,25 @@ namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 Color lineColor = lineColors.ContainsKey(lineName) ? lineColors[lineName] : Color.Gray; // Couleur par défaut (gris) si ligne inconnue
 
                 // Dessiner une ligne entre les stations avec la couleur correspondante
-                using (Pen pen = new Pen(lineColor, 2))
+                using (Pen pen = new Pen(lineColor, 4))
                 {
                     g.DrawLine(pen, start, end);
                 }
+                if (ponderation)
+                {
+                    PointF midPoint = new PointF((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+                    if (lien.Poids > 0) g.DrawString(lien.Poids.ToString(), new Font("Arial", 12), Brushes.Black, midPoint);
+                    if (!drawnLines.Contains(lineName))
+                    {
+                        PointF labelPosition = new PointF((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+                        labelPosition.Y -= 15;
+                        Color textColor = lineColors.ContainsKey(lineName) ? lineColors[lineName] : Color.Gray;
+                        g.DrawString("Ligne : " + lineName, new Font("Arial", 10, FontStyle.Bold), new SolidBrush(textColor), labelPosition);
+                        drawnLines.Add(lineName);
+                    }
+                }
+                // Dessiner le nom de la ligne une seule fois
+                
             }
 
             // 3. Dessiner les stations sous forme de cercles (ou autres formes)

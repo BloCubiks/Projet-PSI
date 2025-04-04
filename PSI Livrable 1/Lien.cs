@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class Lien<T>
     {

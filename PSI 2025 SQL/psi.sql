@@ -1,58 +1,57 @@
-CREATE DATABASE IF NOT EXISTS psi;
+DROP DATABASE IF EXISTS psi;
+CREATE DATABASE psi;
 USE psi;
 
 -- Création de la table Cuisinier
 CREATE TABLE Cuisinier (
-    NumeroCuis INT PRIMARY KEY,
-    NomCuis VARCHAR(50),
-    PrenomCuis VARCHAR(50),
-    Adresse TEXT,
-    CodePostal VARCHAR(10),
-    Ville VARCHAR(50),
-    Telephone VARCHAR(15),
-    Mail VARCHAR(100),
-    Metro VARCHAR(50),
-    NbreLivraison INT,
-    Note FLOAT CHECK (0 <= Note <= 5)
+    NumeroCuisinier INT PRIMARY KEY,
+    NomC VARCHAR(50),
+    PrenomC VARCHAR(50),
+    AdresseC VARCHAR(50),
+    CodePostalC VARCHAR(10),
+    VilleC VARCHAR(50),
+    TelC VARCHAR(15),
+    EmailC VARCHAR(100),
+    MetroC VARCHAR(50)
 );
 
-
-
--- Table Client
-CREATE TABLE Client (
-    NumeroClient INT PRIMARY KEY,
-    NomClient VARCHAR(50),
-    PrenomClient VARCHAR(50),
-    Adresse TEXT,
-    CodePostal VARCHAR(10),
-    Ville VARCHAR(50),
-    Telephone VARCHAR(15),
-    Mail VARCHAR(100),
-    Metro VARCHAR(50)
-);
-
--- Table Particulier (héritant de Client)
+-- Table Paticulier
 CREATE TABLE Particulier (
-    IdParticulier INT PRIMARY KEY,
-    MDPParticulier VARCHAR(100),
-    FOREIGN KEY (IdParticulier) REFERENCES Client(NumeroClient) ON DELETE CASCADE
+    NumeroParticulier INT PRIMARY KEY,
+    NomP VARCHAR(50),
+    PrenomP VARCHAR(50),
+    AdresseP VARCHAR(50),
+    CodePostalP VARCHAR(10),
+    TelP VARCHAR(15),
+    EmailP VARCHAR(100),
+    MetroP VARCHAR(50)
 );
 
--- Table Entreprise (héritant de Client)
+-- Table Entreprise
 CREATE TABLE Entreprise (
-    NumeroE INT PRIMARY KEY,
+    NumeroEntreprise INT PRIMARY KEY,
     NomE VARCHAR(50),
-    MDPEntreprise VARCHAR(100),
-    FOREIGN KEY (NumeroE) REFERENCES Client(NumeroClient) ON DELETE CASCADE
+    ContactE VARCHAR(50),
+    AdresseE VARCHAR(50),
+    CodePostalE VARCHAR(10),
+    TelE VARCHAR(15),
+    EmailE VARCHAR(100),
+    MetroE VARCHAR(50)
 );
 
 -- Table Commande
 CREATE TABLE Commande (
-    IdCommande INT PRIMARY KEY,
+    IDCommande INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     DateCommande DATE,
-    Statut VARCHAR(20) CHECK (Statut IN ('en prep', 'en chemin', 'en bas', 'livré')),
-    AdresseDepart TEXT,
-    AdresseArrivee TEXT
+    AdresseLivraison VARCHAR(255),
+    Satisfaction INT,
+    CHECK (Satisfaction >= 0 AND Satisfaction <= 10),
+    NumeroCuisinier INT,
+    NumeroParticulier INT,
+    NumeroEntreprise INT,
+    FOREIGN KEY (NumeroCuisinier) REFERENCES Cuisinier(NumeroCuisinier) ON DELETE CASCADE,
+    FOREIGN KEY (NumeroParticulier) REFERENCES Particulier(NumeroParticulier) ON DELETE CASCADE,
+    FOREIGN KEY (NumeroEntreprise) REFERENCES Entreprise(NumeroEntreprise) ON DELETE CASCADE
 );
 
 -- Table Plat
@@ -65,7 +64,9 @@ CREATE TABLE Plat (
     DateFabrication DATE,
     DatePeremption DATE,
     RegimeAlim VARCHAR(50),
-    Nationalite VARCHAR(50)
+    Nationalite VARCHAR(50),
+    NumeroCuisinier INT,
+    FOREIGN KEY (NumeroCuisinier) REFERENCES Cuisinier(NumeroCuisinier) ON DELETE CASCADE
 );
 
 -- Table Ingredient
@@ -75,55 +76,68 @@ CREATE TABLE Ingredient (
     Quantite INT NOT NULL
 );
 
-
--- Table EstCompose (relation Plat - Ingredient)
+-- Table EstCompose
 CREATE TABLE EstCompose (
     IdPlat INT,
     IdIngredient INT,
-    PRIMARY KEY (IdPlat, IdIngredient),
     FOREIGN KEY (IdPlat) REFERENCES Plat(IdPlat) ON DELETE CASCADE,
     FOREIGN KEY (IdIngredient) REFERENCES Ingredient(IdIngredient) ON DELETE CASCADE
 );
 
--- Table Passe (relation Client - Commande)
-CREATE TABLE Passe (
-    NumeroClient INT,
-    IdCommande INT,
-    PRIMARY KEY (NumeroClient, IdCommande),
-    FOREIGN KEY (NumeroClient) REFERENCES Client(NumeroClient) ON DELETE CASCADE,
-    FOREIGN KEY (IdCommande) REFERENCES Commande(IdCommande) ON DELETE CASCADE
-);
-
--- Table Contient (relation Commande - Plat)
+-- Table Contient
 CREATE TABLE Contient (
     IdCommande INT,
     IdPlat INT,
-    PRIMARY KEY (IdCommande, IdPlat),
     FOREIGN KEY (IdCommande) REFERENCES Commande(IdCommande) ON DELETE CASCADE,
     FOREIGN KEY (IdPlat) REFERENCES Plat(IdPlat) ON DELETE CASCADE
 );
 
--- Table Créer (relation Cuisinier - Plat)
-CREATE TABLE Creer (
-    NumeroCuis INT,
-    IdPlat INT,
-    PRIMARY KEY (NumeroCuis, IdPlat),
-    FOREIGN KEY (NumeroCuis) REFERENCES Cuisinier(NumeroCuis) ON DELETE CASCADE,
-    FOREIGN KEY (IdPlat) REFERENCES Plat(IdPlat) ON DELETE CASCADE
-);
+-- Peuplement de la table Cuisinier
+INSERT INTO Cuisinier VALUES 
+(1, 'Dupont', 'Jean', 'Rue de Paris', '75001', 'Paris', '0601020304', 'jean.dupont@mail.com', 'Châtelet'),
+(2, 'Lemoine', 'Claire', 'Boulevard Haussmann', '75009', 'Paris', '0611223344', 'claire.lemoine@mail.com', 'Opéra'),
+(3, 'Bernard', 'Luc', 'Rue Lafayette', '75010', 'Paris', '0622334455', 'luc.bernard@mail.com', 'Gare du Nord');
 
--- Table Specialise (relation Client - Particulier/Entreprise)
-CREATE TABLE Specialise (
-    NumeroClient INT PRIMARY KEY,
-    TypeClient ENUM('Particulier', 'Entreprise') NOT NULL,
-    FOREIGN KEY (NumeroClient) REFERENCES Client(NumeroClient) ON DELETE CASCADE
-);
+-- Peuplement de la table Particulier
+INSERT INTO Particulier VALUES 
+(1, 'Martin', 'Sophie', 'Rue de Lyon', '69001', '0612345678', 'sophie.martin@mail.com', 'Bellecour'),
+(2, 'Durand', 'Paul', 'Rue de Rivoli', '75001', '0623456789', 'paul.durand@mail.com', 'Châtelet');
 
--- Peuplement Cuisinier
-LOAD DATA INFILE 'Cuisinier.txt'
-INTO TABLE Cuisinier
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
-IGNORE 1 ROWS;
+-- Peuplement de la table Entreprise
+INSERT INTO Entreprise VALUES 
+(1, 'TechCorp', 'Julie Morel', 'Avenue des Champs', '75008', '0634567890', 'contact@techcorp.com', 'Franklin D. Roosevelt'),
+(2, 'DataSoft', 'Marc Legrand', 'Boulevard Voltaire', '75011', '0645678901', 'marc.legrand@datasoft.com', 'République');
 
+-- Peuplement de la table Commande
+INSERT INTO Commande (IDCommande, DateCommande, AdresseLivraison, Satisfaction, NumeroCuisinier, NumeroParticulier, NumeroEntreprise) VALUES 
+(1, '2024-03-30', 'Rue de Lyon, 45', 8, 1, 1, NULL),
+(2, '2024-03-29', 'Avenue des Champs, 50', 10, 2, NULL, 1),
+(3, '2024-03-28', 'Boulevard Voltaire, 20', 7, 3, NULL, 2);
+
+-- Peuplement de la table Plat
+INSERT INTO Plat VALUES 
+(1, 'Pizza Margherita', 12.50, 5, 'Italien', '2024-03-28', '2024-04-02', 'Végétarien', 'Italien', 1),
+(2, 'Sushi Saumon', 15.00, 10, 'Japonais', '2024-03-29', '2024-04-03', 'Pescetarien', 'Japonais', 2),
+(3, 'Burger Classic', 10.00, 7, 'Américain', '2024-03-27', '2024-04-01', 'Omnivore', 'Américain', 3);
+
+-- Peuplement de la table Ingredient
+INSERT INTO Ingredient (IdIngredient, Nom, Quantite) VALUES 
+(1, 'Tomate', 10), 
+(2, 'Mozzarella', 5), 
+(3, 'Basilic', 2), 
+(4, 'Saumon', 4), 
+(5, 'Riz', 6),
+(6, 'Viande hachée', 8), 
+(7, 'Pain burger', 6);
+
+-- Peuplement de la table EstCompose
+INSERT INTO EstCompose VALUES 
+(1, 1), (1, 2), (1, 3), 
+(2, 4), (2, 5), 
+(3, 6), (3, 7);
+
+-- Peuplement de la table Contient
+INSERT INTO Contient VALUES 
+(1, 1), 
+(2, 2), 
+(3, 3);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace PSI_Livrable_1_ClovisNOE_JaimeSOUSA_ThomasMAYE
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class Graphe<T>
     {

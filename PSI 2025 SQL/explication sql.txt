@@ -1,0 +1,1 @@
+il faut avoir ouvert MySQL avec une connexion admin root root, et executer le script psi.sql avant de pouvoir tester le code

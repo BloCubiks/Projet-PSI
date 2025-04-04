@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSI Livrable 1", "PSI Livrable 1\PSI Livrable 1.csproj", "{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE", "PSI Livrable 1\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj", "{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUnit", "TestUnit\TestUnit.csproj", "{05819310-C517-448D-A6CC-42394BCC348C}"
 EndProject
