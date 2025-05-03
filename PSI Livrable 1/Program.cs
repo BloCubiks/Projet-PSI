@@ -83,10 +83,11 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 Console.WriteLine("5. Utiliser l'algorithme de Bellman-Ford");
                 Console.WriteLine("6. Utiliser l'algorithme de Floyd-Warshall");
                 Console.WriteLine("7. Se connecter à la base de donnée");
-                Console.WriteLine("8. Quitter l'application");
+                Console.WriteLine("8. Afficher le graphe cuisinier client");
+                Console.WriteLine("9. Quitter l'application");
                 Console.Write("Entrez votre choix : ");
                 string input = Console.ReadLine();
-                if (!int.TryParse(input, out choix) || choix < 1 || choix > 8)
+                if (!int.TryParse(input, out choix) || choix < 1 || choix > 9)
                 {
                     Console.WriteLine("Choix invalide. Veuillez réessayer.");
                 }
@@ -232,7 +233,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             break;
                         case 5:
                             // Utiliser l'algorithme de Bellman-Ford
-                            // Utiliser l'algorithme de Dijkstra
                             bool trouveB = false;
                             Console.Write("Entrez le nom de la station de départ (sans faute) : ");
                             string nomStationF = Console.ReadLine();
@@ -344,17 +344,50 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             BDD.Appelle_BDD(graph);
                             break;
                         case 8:
+                            Graphe<string> grapheCommande = new Graphe<string>();
+                            Dictionary<int,string> cuisiniers = BDD.Cuisiniers();
+                            Dictionary<int, string> clients = BDD.Clients();
+                            Dictionary<int, int> commandes = BDD.Commandes();
+                            
+                            foreach (int id in cuisiniers.Keys)
+                            {
+                                Noeud<string> noeud = new Noeud<string>(id, cuisiniers[id]);
+                                grapheCommande.AjouterNoeud(noeud);
+                            }
+                            foreach (int id in clients.Keys)
+                            {
+                                Noeud<string> noeud = new Noeud<string>(id + 4000, clients[id]); //on additionne 4000 pour ne pas avoir de doublon avec les cuisiniers
+                                grapheCommande.AjouterNoeud(noeud);
+                            }
+                            foreach (int commande in commandes.Keys)
+                            {
+                                int idCuisinier = commande;
+                                int idClient = commandes[commande];
+                                string nomCuisinier = cuisiniers[idCuisinier];
+                                string nomClient = clients[idClient];
+                                Noeud<string> noeudCuisinier = grapheCommande.Noeuds.FirstOrDefault(n => n.Id == idCuisinier);
+                                Noeud<string> noeudClient = grapheCommande.Noeuds.FirstOrDefault(n => n.Id == idClient + 4000);
+                                if (noeudCuisinier != null && noeudClient != null)
+                                {
+                                    grapheCommande.AjouterLien(new Lien<string>(noeudCuisinier, noeudClient, 1));
+                                }
+                            }
+                            Dictionary<Noeud<string>,int> couleurs = grapheCommande.Welsh_Powel();
+                            CuisinierClient.VisualiserGraphe(grapheCommande, cuisiniers, clients, couleurs);
+
+                            break;
+                        case 9:
                             fin = true;
                             break;
                     }
                 }
                 Console.Clear();
             }
-            while (choix < 1 || choix > 8)
+            while (choix < 1 || choix > 9)
             {
                 Console.Write("Entrez votre choix : ");
                 string input = Console.ReadLine();
-                if (!int.TryParse(input, out choix) || choix < 1 || choix > 8)
+                if (!int.TryParse(input, out choix) || choix < 1 || choix > 9)
                 {
                     Console.WriteLine("Choix invalide. Veuillez réessayer.");
                 }

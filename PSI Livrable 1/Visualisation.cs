@@ -12,17 +12,67 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
         private Dictionary<Noeud<T>, (double, double)> nodePositions;
         private bool ponderation;
 
-        // Variables pour la mise à l'échelle
         private double minLongitude, maxLongitude, minLatitude, maxLatitude;
         private double scaleX, scaleY;
         private List<string> dejadessine;
 
-        // Dictionnaire des couleurs pour chaque ligne
         private Dictionary<string, Color> lineColors;
 
-        // Dictionnaire pour suivre les lignes déjà dessinées
         private HashSet<string> drawnLines;
+        
+        public static void DessinerGrapheAvecRoles(Graphics g, Graphe<string> graphe, Dictionary<int, string> cuisiniers, Dictionary<int, string> particuliers)
+        {
+            var nodePositions = new Dictionary<Noeud<string>, PointF>();
+            int nodeIndex = 0;
+            int radius = 200; 
+            PointF center = new PointF(300, 300); 
 
+            foreach (var noeud in graphe.Noeuds)
+            {
+                double angle = 2 * Math.PI * nodeIndex / graphe.Noeuds.Count;
+                float x = center.X + (float)(radius * Math.Cos(angle));
+                float y = center.Y + (float)(radius * Math.Sin(angle));
+                nodePositions[noeud] = new PointF(x, y);
+                nodeIndex++;
+            }
+
+            foreach (var lien in graphe.Liens)
+            {
+                var start = nodePositions[lien.NoeudDepart];
+                var end = nodePositions[lien.NoeudArrive];
+                g.DrawLine(Pens.Black, start, end);
+            }
+
+            foreach (var noeud in graphe.Noeuds)
+            {
+                var position = nodePositions[noeud];
+                bool isCuisinier = cuisiniers.ContainsKey(noeud.Id);
+                bool isParticulier = particuliers.ContainsKey(noeud.Id - 4000);
+
+                if (isCuisinier && isParticulier)
+                {
+                    using (Brush greenBrush = new SolidBrush(Color.Green))
+                    using (Brush orangeBrush = new SolidBrush(Color.Orange))
+                    {
+                        g.FillPie(greenBrush, position.X - 10, position.Y - 10, 20, 20, 0, 180);
+                        g.FillPie(orangeBrush, position.X - 10, position.Y - 10, 20, 20, 180, 180);
+                    }
+                }
+                else if (isCuisinier)
+                {
+                    g.FillEllipse(Brushes.Green, position.X - 10, position.Y - 10, 20, 20);
+                }
+                else if (isParticulier)
+                {
+                    g.FillEllipse(Brushes.Orange, position.X - 10, position.Y - 10, 20, 20);
+                }
+
+                g.DrawEllipse(Pens.Black, position.X - 10, position.Y - 10, 20, 20);
+
+                string label = isCuisinier ? cuisiniers[noeud.Id] : particuliers[noeud.Id - 4000];
+                g.DrawString(label, new Font("Arial", 10), Brushes.Black, position.X + 12, position.Y);
+            }
+        }
         public Visualisation(Graphe<T> graph, Dictionary<Noeud<T>, Station> nodeToStation, Dictionary<Noeud<T>, (double, double)> nodePositions, bool ponderation=false)
         {
             this.graph = graph;
@@ -35,7 +85,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             this.Resize += OnResize;  // S'abonner à l'événement de redimensionnement
             InitializeScaling();  // Initialisation des échelles
 
-            // Initialiser le dictionnaire des couleurs des lignes
             InitializeLineColors();
             dejadessine = new List<string>();
             drawnLines = new HashSet<string>();
@@ -44,7 +93,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 
         private void InitializeScaling()
         {
-            // Trouver les coordonnées minimales et maximales
             minLongitude = double.MaxValue;
             maxLongitude = double.MinValue;
             minLatitude = double.MaxValue;
@@ -58,9 +106,8 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 maxLatitude = Math.Max(maxLatitude, position.Item2);
             }
 
-            // Calculer l'échelle en fonction des coordonnées
-            scaleX = (this.ClientSize.Width - 100) / (maxLongitude - minLongitude);  // 50 pour une marge
-            scaleY = (this.ClientSize.Height - 100) / (maxLatitude - minLatitude);    // 50 pour une marge
+            scaleX = (this.ClientSize.Width - 100) / (maxLongitude - minLongitude); 
+            scaleY = (this.ClientSize.Height - 100) / (maxLatitude - minLatitude);  
         }
 
         private void InitializeLineColors()
@@ -102,22 +149,14 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
         }
         private float GetDistanceFromPointToLine(PointF lineStart, PointF lineEnd, PointF point)
         {
-            // Calculer la longueur du segment de ligne
             float lineLength = (float)Math.Sqrt(Math.Pow(lineEnd.X - lineStart.X, 2) + Math.Pow(lineEnd.Y - lineStart.Y, 2));
 
-            // Cas où la ligne est un point (les deux extrémités sont les mêmes)
             if (lineLength == 0)
             {
                 return (float)Math.Sqrt(Math.Pow(point.X - lineStart.X, 2) + Math.Pow(point.Y - lineStart.Y, 2));
             }
-
-            // Calculer le produit scalaire entre les vecteurs (point - start) et (lineEnd - lineStart)
             float dotProduct = ((point.X - lineStart.X) * (lineEnd.X - lineStart.X)) + ((point.Y - lineStart.Y) * (lineEnd.Y - lineStart.Y));
-
-            // Calculer la projection du point sur la ligne
             float projection = dotProduct / lineLength;
-
-            // Si la projection est en dehors du segment de ligne, prendre la distance avec les extrémités
             if (projection < 0)
             {
                 return (float)Math.Sqrt(Math.Pow(point.X - lineStart.X, 2) + Math.Pow(point.Y - lineStart.Y, 2));
@@ -127,7 +166,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 return (float)Math.Sqrt(Math.Pow(point.X - lineEnd.X, 2) + Math.Pow(point.Y - lineEnd.Y, 2));
             }
 
-            // Calculer la distance perpendiculaire entre le point et la ligne
             float height = (float)(Math.Abs((lineEnd.Y - lineStart.Y) * point.X - (lineEnd.X - lineStart.X) * point.Y + lineEnd.X * lineStart.Y - lineEnd.Y * lineStart.X) / lineLength);
             return height;
         }
@@ -137,7 +175,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             base.OnPaint(e);
             Graphics g = e.Graphics;
 
-            // 1. Placer les stations (nœuds)
             Dictionary<Noeud<T>, PointF> scaledPositions = new Dictionary<Noeud<T>, PointF>();
 
             foreach (var node in graph.Noeuds)
@@ -145,15 +182,12 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 
                 var position = nodePositions[node];
 
-                // Normalisation des coordonnées en fonction de la mise à l'échelle
                 float x = (float)((position.Item1 - minLongitude) * scaleX)+50;
-                // Inverser l'axe Y en soustrayant la position Y de la hauteur totale de la fenêtre
-                float y = (float)((maxLatitude - position.Item2) * scaleY)+50;  // Inverser la position Y ici
+                float y = (float)((maxLatitude - position.Item2) * scaleY)+50; 
 
                 scaledPositions[node] = new PointF(x, y);
             }
 
-            // 2. Dessiner les liens (lignes) entre les stations
             List<(PointF start, PointF end)> lineSegments = new List<(PointF start, PointF end)>();
 
             foreach (var lien in graph.Liens)
@@ -161,18 +195,15 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 var start = scaledPositions[lien.NoeudDepart];
                 var end = scaledPositions[lien.NoeudArrive];
 
-                // Ajouter les segments de ligne à la liste
                 lineSegments.Add((start, end));
 
-                // Obtenir la couleur de la ligne
-                string lineName = lien.Line; // La ligne est associée au lien
+                string lineName = lien.Line;
                 if (lineName == null)
                 {
-                    lineName = "Transfert"; // Ligne de transfert
+                    lineName = "Transfert"; 
                 }
-                Color lineColor = lineColors.ContainsKey(lineName) ? lineColors[lineName] : Color.Gray; // Couleur par défaut (gris) si ligne inconnue
+                Color lineColor = lineColors.ContainsKey(lineName) ? lineColors[lineName] : Color.Gray; 
 
-                // Dessiner une ligne entre les stations avec la couleur correspondante
                 using (Pen pen = new Pen(lineColor, 4))
                 {
                     g.DrawLine(pen, start, end);
@@ -193,68 +224,56 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                         }
                     }
                 }
-                // Dessiner le nom de la ligne une seule fois
-
             }
 
-            // 3. Dessiner les stations sous forme de cercles (ou autres formes)
-            HashSet<RectangleF> occupiedAreas = new HashSet<RectangleF>();  // Pour suivre les zones occupées par les textes
+            HashSet<RectangleF> occupiedAreas = new HashSet<RectangleF>(); 
 
             foreach (var node in graph.Noeuds)
             {
                 var position = scaledPositions[node];
 
-                // Dessiner un cercle pour chaque station (blanc)
                 g.FillEllipse(Brushes.White, position.X - 5, position.Y - 5, 10, 10);
 
-                // Dessiner un contour noir autour du cercle
-                using (Pen blackPen = new Pen(Color.Black, 1))  // 1 pixel de largeur
+                using (Pen blackPen = new Pen(Color.Black, 1)) 
                 {
                     g.DrawEllipse(blackPen, position.X - 5, position.Y - 5, 10, 10);
                 }
 
-                // Initialisation de la position du texte
                 float textX = position.X + 12;
                 float textY = position.Y;
 
-                // Vérifier si l'espace est déjà occupé par un texte
                 SizeF textSize = g.MeasureString(nodeToStation[node].LibelleStation, new Font("Arial", 6));
                 RectangleF textArea = new RectangleF(textX, textY, textSize.Width, textSize.Height);
 
-                // Si la zone est déjà occupée, essayer de décaler verticalement
                 int offsetY = 0;
                 while (occupiedAreas.Contains(textArea))
                 {
-                    offsetY += (int)textSize.Height + 2;  // Décaler de la hauteur du texte + un peu d'espace
+                    offsetY += (int)textSize.Height + 2; 
                     textArea = new RectangleF(textX, textY + offsetY, textSize.Width, textSize.Height);
                 }
 
-                // Vérifier la distance avec les lignes (segments)
                 bool overlapWithLine = false;
                 foreach (var segment in lineSegments)
                 {
                     float distance = GetDistanceFromPointToLine(segment.start, segment.end, new PointF(textX, textY));
-                    if (distance < 5) // Si l'étiquette est trop proche de la ligne
+                    if (distance < 5) 
                     {
                         overlapWithLine = true;
                         break;
                     }
                 }
 
-                // Si l'étiquette se superpose à une ligne, la déplacer
                 if (overlapWithLine)
                 {
-                    textY += (int)(textSize.Height + 5);  // Déplacer l'étiquette plus loin
+                    textY += (int)(textSize.Height + 5); 
                 }
 
-                // Dessiner le texte de la station
                 if (!dejadessine.Contains(nodeToStation[node].LibelleStation))
                 {
                     g.DrawString(nodeToStation[node].LibelleStation, new Font("Arial", 6), Brushes.Black, textX, textY + offsetY);
                     dejadessine.Add(nodeToStation[node].LibelleStation);
                 }
 
-                // Marquer cette zone comme occupée
                 occupiedAreas.Add(textArea);
             }
         }

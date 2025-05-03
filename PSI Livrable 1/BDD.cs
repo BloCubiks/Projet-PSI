@@ -18,11 +18,83 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Threading;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class BDD
     {
+        public static Dictionary<int, string> Cuisiniers()
+        {
+            string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            connection.Open();
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT NumeroCuisinier,NomC FROM Cuisinier;";
+            MySqlDataReader reader = command.ExecuteReader();
+
+            Dictionary<int, string> cuisiniers = new Dictionary<int, string>();
+
+            while (reader.Read())
+            {
+                int numeroCuisinier = reader.GetInt32(reader.GetOrdinal("NumeroCuisinier"));
+                string nomC = reader.GetString(reader.GetOrdinal("NomC"));
+                cuisiniers[numeroCuisinier] = nomC;
+            }
+            return cuisiniers;
+        }
+        public static Dictionary<int, string> Clients()
+        {
+            string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            connection.Open();
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT NumeroParticulier,NomP FROM Particulier;";
+            MySqlDataReader reader = command.ExecuteReader();
+
+            Dictionary<int, string> clients = new Dictionary<int, string>();
+
+            while (reader.Read())
+            {
+                int numeroParticulier = reader.GetInt32(reader.GetOrdinal("NumeroParticulier"));
+                string nomP = reader.GetString(reader.GetOrdinal("NomP"));
+                clients[numeroParticulier] = nomP;
+            }
+            command = connection.CreateCommand();
+            command.CommandText = "SELECT NumeroEntreprise,NomE FROM Entreprise;";
+            reader.Close();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                int numeroEntreprise = reader.GetInt32(reader.GetOrdinal("NumeroEntreprise")) + 2000;
+                string nomE = reader.GetString(reader.GetOrdinal("NomE"));
+                clients[numeroEntreprise] = nomE;
+            }
+
+            return clients;
+        }
+        public static Dictionary<int, int> Commandes()
+        {
+            string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            connection.Open();
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT NumeroCuisinier,NumeroParticulier,NumeroEntreprise FROM Commande;";
+            MySqlDataReader reader = command.ExecuteReader();
+            Dictionary<int, int> commandes = new Dictionary<int, int>();
+            while (reader.Read())
+            {
+                int numeroCuisinier = reader.GetInt32(reader.GetOrdinal("NumeroCuisinier")); ;
+                int numeroParticulier = reader.IsDBNull(reader.GetOrdinal("numeroParticulier")) ? -1 : reader.GetInt32(reader.GetOrdinal("numeroParticulier"));
+                int numeroEntreprise = reader.IsDBNull(reader.GetOrdinal("NumeroEntreprise")) ? -1 : reader.GetInt32(reader.GetOrdinal("NumeroEntreprise")) + 2000;
+                if (numeroParticulier == -1)
+                {
+                    commandes[numeroCuisinier] = numeroEntreprise;
+                }
+                else commandes[numeroCuisinier] = numeroParticulier;
+            }
+            return commandes;
+        }
         public static void Appelle_BDD(Graphe<Station> graph)
         {
             string choix = "";
@@ -64,7 +136,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                         ModuleStatistique(command, reader);
                         break;
                     case "6":
-                        Demo(command, reader,graph);
+                        Demo(command, reader, graph);
                         break;
                     case "0":
                         Console.WriteLine("Au revoir !");
@@ -79,7 +151,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             connection.Close();
         }
 
-        static void Demo(MySqlCommand command, MySqlDataReader reader, Graphe <Station> graph)
+        static void Demo(MySqlCommand command, MySqlDataReader reader, Graphe<Station> graph)
         {
             Console.Clear();
 
@@ -91,7 +163,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             System.Threading.Thread.Sleep(500);
             command.CommandText =
                 "INSERT INTO Particulier (NumeroParticulier, NomP, PrenomP, AdresseP, CodePostalP, TelP, EmailP, MetroP) " +
-                "VALUES (3, 'Dupuis', 'Marie', '10 Rue de la République', '75011', '0687654321', 'marie.dupuis@mail.com', 'République');";
+                "VALUES (617, 'Dupuis', 'Marie', '10 Rue de la République', '75011', '0687654321', 'marie.dupuis@mail.com', 'République');";
             command.ExecuteNonQuery();
             Console.WriteLine("Particulier créé !");
             Read(command, reader, "SELECT * FROM Particulier;");
@@ -104,7 +176,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             System.Threading.Thread.Sleep(500);
             command.CommandText =
                 "INSERT INTO Cuisinier (NumeroCuisinier, NomC, PrenomC, AdresseC, CodePostalC, VilleC, TelC, EmailC, MetroC) " +
-                "VALUES (4, 'Durand', 'Lucie', '15 Avenue de la Liberté', '75012', 'Paris', '0698765432', 'lucie.durand@mail.com', 'Gare de Lyon');";
+                "VALUES (23, 'Durand', 'Lucie', '15 Avenue de la Liberté', '75012', 'Paris', '0698765432', 'lucie.durand@mail.com', 'Gare de Lyon');";
             command.ExecuteNonQuery();
             Console.WriteLine("Cuisinier créé !");
             Read(command, reader, "SELECT * FROM Cuisinier;");
@@ -117,7 +189,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             System.Threading.Thread.Sleep(500);
             command.CommandText =
                 "INSERT INTO Plat (IdPlat, NomPlat, Prix, Quantite, TypePlat, DateFabrication, DatePeremption, RegimeAlim, Nationalite, NumeroCuisinier) " +
-                "VALUES (4, 'Tacos Mexicain', 12.00, 8, 'Mexicain', '2024-03-30', '2024-04-05', 'Omnivore', 'Mexicain', 4);";
+                "VALUES (56, 'Tacos Mexicain', 12.00, 8, 'Mexicain', '2024-03-30', '2024-04-05', 'Omnivore', 'Mexicain', 4);";
             command.ExecuteNonQuery();
             Console.WriteLine("Plat créé !");
             Read(command, reader, "SELECT * FROM Plat;");
@@ -719,6 +791,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                     Console.WriteLine("2. Mettre à jour une commande");
                     Console.WriteLine("3. Supprimer une commande");
                     Console.WriteLine("4. Afficher les commandes existantes");
+                    Console.WriteLine("5. Afficher le contenu des commandes");
                     Console.WriteLine("0. Retourner au menu principal");
                     Console.Write("Entrez le numéro de l'action souhaitée : ");
                     choix = Console.ReadLine();
@@ -738,6 +811,9 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             AfficherCommande(command, reader);
                             break;
                         case "5":
+                            AfficherContenu(command, reader);
+                            break;
+                        case "0":
                             Console.WriteLine("Retour au menu principal...");
                             break;
                     }
@@ -753,20 +829,21 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
         {
             Console.Clear();
             Console.WriteLine("Création d'une nouvelle commande...");
+
             try
             {
                 Console.Write("Entrez l'ID de la commande : ");
                 if (!int.TryParse(Console.ReadLine(), out int idCommande))
                 {
                     Console.WriteLine("ID invalide. Veuillez entrer un nombre entier.");
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                     return;
                 }
 
                 if (CommandeExiste(idCommande, command))
                 {
                     Console.WriteLine("Une commande avec cet ID existe déjà.");
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                     return;
                 }
 
@@ -774,114 +851,120 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 if (!DateTime.TryParse(Console.ReadLine(), out DateTime dateCommande))
                 {
                     Console.WriteLine("La date de commande n'est pas valide.");
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                     return;
                 }
 
                 Console.Write("Entrez l'adresse de livraison : ");
                 string adresseLivraison = Console.ReadLine();
 
-
                 Console.Write("Entrez le niveau de satisfaction (entre 0 et 10) : ");
                 if (!int.TryParse(Console.ReadLine(), out int satisfaction) || satisfaction < 0 || satisfaction > 10)
                 {
-                    Console.WriteLine("Satisfaction invalide. Veuillez entrer un nombre entier entre 0 et 10.");
-                    System.Threading.Thread.Sleep(1000);
+                    Console.WriteLine("Satisfaction invalide.");
+                    Thread.Sleep(1000);
                     return;
                 }
-
 
                 Console.Write("Entrez le numéro du cuisinier associé à la commande : ");
-                if (!int.TryParse(Console.ReadLine(), out int NumeroCuisinier))
+                if (!int.TryParse(Console.ReadLine(), out int numeroCuisinier))
                 {
-                    Console.WriteLine("Numéro invalide. Veuillez entrer un nombre entier.");
-                    System.Threading.Thread.Sleep(1000);
+                    Console.WriteLine("Numéro invalide.");
+                    Thread.Sleep(1000);
                     return;
                 }
 
-                if (!CuisinierExiste(NumeroCuisinier, command))
+                if (!CuisinierExiste(numeroCuisinier, command))
                 {
                     Console.WriteLine("Le cuisinier spécifié n'existe pas.");
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                     return;
                 }
 
-                Console.Write("La commande est-elle réalisée par un particulier ou une entreprise ? (p/e) : ");
+                Console.Write("Commande pour un particulier ou une entreprise ? (p/e) : ");
                 string choix = Console.ReadLine().ToLower();
-                int NumeroParticulier = 0, NumeroEntreprise = 0;
+                int numeroParticulier = 0, numeroEntreprise = 0;
 
                 if (choix == "e")
                 {
-                    Console.Write("Entrez le numéro de l'entreprise associée à la commande : ");
-                    if (!int.TryParse(Console.ReadLine(), out NumeroEntreprise))
+                    Console.Write("Numéro de l'entreprise : ");
+                    if (!int.TryParse(Console.ReadLine(), out numeroEntreprise) || !EntrepriseExiste(numeroEntreprise, command))
                     {
-                        Console.WriteLine("Numéro invalide. Veuillez entrer un nombre entier.");
-                        System.Threading.Thread.Sleep(1000);
-                        return;
-                    }
-                    if (!EntrepriseExiste(NumeroEntreprise, command))
-                    {
-                        Console.WriteLine("L'entreprise spécifiée n'existe pas.");
-                        System.Threading.Thread.Sleep(1000);
+                        Console.WriteLine("Numéro d'entreprise invalide ou introuvable.");
+                        Thread.Sleep(1000);
                         return;
                     }
                 }
                 else if (choix == "p")
                 {
-                    Console.Write("Entrez le numéro du particulier associé à la commande : ");
-                    if (!int.TryParse(Console.ReadLine(), out NumeroParticulier))
+                    Console.Write("Numéro du particulier : ");
+                    if (!int.TryParse(Console.ReadLine(), out numeroParticulier) || !ParticulierExiste(numeroParticulier, command))
                     {
-                        Console.WriteLine("Numéro invalide. Veuillez entrer un nombre entier.");
-                        System.Threading.Thread.Sleep(1000);
-                        return;
-                    }
-                    if (!ParticulierExiste(NumeroParticulier, command))
-                    {
-                        Console.WriteLine("Le particulier spécifié n'existe pas.");
-                        System.Threading.Thread.Sleep(1000);
+                        Console.WriteLine("Numéro de particulier invalide ou introuvable.");
+                        Thread.Sleep(1000);
                         return;
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Choix invalide. Tapez 'p' pour particulier ou 'e' pour entreprise.");
-                    System.Threading.Thread.Sleep(1000);
+                    Console.WriteLine("Choix invalide.");
+                    Thread.Sleep(1000);
                     return;
                 }
 
+                // Insertion dans Commande
                 command.Parameters.Clear();
-                string insertQuery = "INSERT INTO Commande (IDCommande, DateCommande, AdresseLivraison, Satisfaction, NumeroCuisinier, ";
-                string valuesQuery = "VALUES (@IDCommande, @DateCommande, @AdresseLivraison, @Satisfaction, @NumeroCuisinier, ";
-
-                if (choix == "e")
-                {
-                    insertQuery += "NumeroEntreprise) ";
-                    valuesQuery += "@NumeroEntreprise) ";
-                    command.Parameters.AddWithValue("@NumeroEntreprise", NumeroEntreprise);
-                }
-                else
-                {
-                    insertQuery += "NumeroParticulier) ";
-                    valuesQuery += "@NumeroParticulier) ";
-                    command.Parameters.AddWithValue("@NumeroParticulier", NumeroParticulier);
-                }
-
-                command.CommandText = insertQuery + valuesQuery;
+                command.CommandText = @"
+            INSERT INTO Commande (IDCommande, DateCommande, AdresseLivraison, Satisfaction, NumeroCuisinier, 
+                                  NumeroEntreprise, NumeroParticulier)
+            VALUES (@IDCommande, @DateCommande, @AdresseLivraison, @Satisfaction, @NumeroCuisinier, 
+                    @NumeroEntreprise, @NumeroParticulier)";
                 command.Parameters.AddWithValue("@IDCommande", idCommande);
                 command.Parameters.AddWithValue("@DateCommande", dateCommande);
                 command.Parameters.AddWithValue("@AdresseLivraison", adresseLivraison);
                 command.Parameters.AddWithValue("@Satisfaction", satisfaction);
-                command.Parameters.AddWithValue("@NumeroCuisinier", NumeroCuisinier);
-
+                command.Parameters.AddWithValue("@NumeroCuisinier", numeroCuisinier);
+                command.Parameters.AddWithValue("@NumeroEntreprise", (choix == "e") ? numeroEntreprise : (object)DBNull.Value);
+                command.Parameters.AddWithValue("@NumeroParticulier", (choix == "p") ? numeroParticulier : (object)DBNull.Value);
                 command.ExecuteNonQuery();
-                Console.WriteLine("Commande créée avec succès !");
+
+                // Ajout des plats à la commande
+                while (true)
+                {
+                    Console.Write("Entrez l'ID d'un plat à ajouter à la commande (ou laissez vide pour terminer) : ");
+                    string input = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(input)) break;
+
+                    if (!int.TryParse(input, out int idPlat))
+                    {
+                        Console.WriteLine("ID de plat invalide.");
+                        continue;
+                    }
+
+                    if (!PlatExiste(idPlat, command))
+                    {
+                        Console.WriteLine("Aucun plat avec cet ID.");
+                        continue;
+                    }
+
+                    // Insertion dans Contient sans quantité
+                    command.Parameters.Clear();
+                    command.CommandText = "INSERT INTO Contient (IdCommande, IdPlat) VALUES (@IdCommande, @IdPlat)";
+                    command.Parameters.AddWithValue("@IdCommande", idCommande);
+                    command.Parameters.AddWithValue("@IdPlat", idPlat);
+                    command.ExecuteNonQuery();
+
+                    Console.WriteLine("Plat ajouté !");
+                }
+
+                Console.WriteLine("Commande créée avec ses plats !");
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erreur lors de la création de la commande : " + ex.Message);
             }
 
-            System.Threading.Thread.Sleep(1000);
+            Thread.Sleep(1000);
         }
         static void MajCommande(MySqlCommand command)
         {
@@ -1042,6 +1125,84 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.ReadKey();
             Console.Clear();
         }
+        static void AfficherContenu(MySqlCommand command, MySqlDataReader reader)
+        {
+            Console.Clear();
+
+            command.CommandText = @"
+        SELECT 
+            cmd.IDCommande,
+            cmd.DateCommande,
+            cmd.AdresseLivraison,
+            cmd.Satisfaction,
+
+            c.NomC,
+            c.PrenomC,
+            c.MetroC,
+
+            p.NomP,
+            p.PrenomP,
+            p.MetroP,
+
+            e.NomE,
+            e.MetroE,
+
+            plat.NomPlat,
+            plat.Prix
+
+        FROM Commande cmd
+        LEFT JOIN Cuisinier c ON cmd.NumeroCuisinier = c.NumeroCuisinier
+        LEFT JOIN Particulier p ON cmd.NumeroParticulier = p.NumeroParticulier
+        LEFT JOIN Entreprise e ON cmd.NumeroEntreprise = e.NumeroEntreprise
+        LEFT JOIN Contient co ON cmd.IDCommande = co.IdCommande
+        LEFT JOIN Plat plat ON co.IdPlat = plat.IdPlat
+        ORDER BY cmd.IDCommande;
+    ";
+
+            reader = command.ExecuteReader();
+            Console.WriteLine("=== Contenu des Commandes ===\n");
+
+            int lastCommandeId = -1;
+
+            while (reader.Read())
+            {
+                int currentCommandeId = Convert.ToInt32(reader["IDCommande"]);
+                if (currentCommandeId != lastCommandeId)
+                {
+                    Console.WriteLine($"\n Commande #{reader["IDCommande"]} - Date : {reader["DateCommande"]} - Satisfaction : {reader["Satisfaction"]}/10");
+                    Console.WriteLine($"   Adresse de livraison : {reader["AdresseLivraison"]}");
+
+                    // Cuisinier
+                    Console.WriteLine($"    Cuisinier : {reader["NomC"]} {reader["PrenomC"]} (Métro : {reader["MetroC"]})");
+
+                    // Client : soit Particulier soit Entreprise
+                    if (!reader.IsDBNull(reader.GetOrdinal("NomP")))
+                    {
+                        Console.WriteLine($"    Client Particulier : {reader["NomP"]} {reader["PrenomP"]} (Métro : {reader["MetroP"]})");
+                    }
+                    else if (!reader.IsDBNull(reader.GetOrdinal("NomE")))
+                    {
+                        Console.WriteLine($"    Client Entreprise : {reader["NomE"]} (Métro : {reader["MetroE"]})");
+                    }
+
+                    Console.WriteLine("    Plats commandés :");
+                    lastCommandeId = currentCommandeId;
+                }
+
+                // Affichage des plats si présents
+                if (!reader.IsDBNull(reader.GetOrdinal("NomPlat")))
+                {
+                    Console.WriteLine($"    {reader["NomPlat"]} ({reader["Prix"]} euros)");
+                }
+            }
+
+            reader.Close();
+            Console.WriteLine("\nAppuyez sur une touche pour continuer...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+
 
         static void GestionCuisinier(MySqlCommand command, MySqlDataReader reader)
         {
@@ -1582,6 +1743,5 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             int count = Convert.ToInt32(command.ExecuteScalar());
             return count > 0;
         }
-
     }
 }

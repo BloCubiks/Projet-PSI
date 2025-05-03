@@ -380,16 +380,55 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
             return matriceFloyd;
         }
+        public Dictionary<Noeud<T>,int> Welsh_Powel()
+        {
+            Dictionary<Noeud<T>,int> couleurs = new Dictionary<Noeud<T>,int>();
+            int couleur = -1;
+            Dictionary<Noeud<T>, int> degres = new Dictionary<Noeud<T>, int>();
+            foreach (Noeud<T> noeud in noeuds)
+            {
+                degres[noeud] = liste_Adjacence[noeud].Count;
+            }
+            List <Noeud<T>> noeudsRestants = noeuds.OrderByDescending(n => degres[n]).ToList();
+            while (noeudsRestants.Count > 0)
+            {
+                couleur++;
+                List<Noeud<T>> aSupprimer = new List<Noeud<T>>();
+                Noeud<T> noeudActuel = noeudsRestants[0];
+                aSupprimer.Add(noeudActuel);
+                couleurs[noeudActuel] = couleur;
+                List<Noeud<T>> voisins = liste_Adjacence[noeudActuel];
+                foreach (Noeud<T> noeud in noeudsRestants)
+                {
+                    if (!aSupprimer.Contains(noeud) && !voisins.Contains(noeud))
+                    {
+                        couleurs[noeud] = couleur;
+                        aSupprimer.Add(noeud);
+                        foreach (Noeud<T> voisin in liste_Adjacence[noeud])
+                        {
+                            if (!voisins.Contains(voisin))
+                            {
+                                voisins.Add(voisin);
+                            }
+                        }
+                    }
+                }
+                foreach (Noeud<T> noeud in aSupprimer)
+                {
+                    noeudsRestants.Remove(noeud);
+                }
+            }
+
+            return couleurs;
+        }
         public List<Noeud<T>> Noeuds
         {
             get { return noeuds; }
         }
-
         public List<Lien<T>> Liens
         {
             get { return liens; }
         }
-
         public Dictionary<Noeud<T>, List<Noeud<T>>> Liste_Adjacence
         {
             get { return liste_Adjacence; }

@@ -98,6 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDD.cs" />
+    <Compile Include="CuisinierClient.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Station.cs" />
     <Compile Include="Graphe.cs" />
     <Compile Include="Lien.cs" />
