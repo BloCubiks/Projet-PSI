@@ -64,7 +64,7 @@ public class CuisinierClient : Form
 
             string nom = "";
             bool isCuisinier = false;
-            bool isParticulier = false;
+            bool isClient = false;
 
             if (cuisiniers.ContainsKey(noeud.Id))
             {
@@ -74,12 +74,12 @@ public class CuisinierClient : Form
             else if (particuliers.ContainsKey(noeud.Id - 4000))
             {
                 nom = particuliers[noeud.Id - 4000];
-                isParticulier = true;
+                isClient = true;
             }
 
             Pen borderPen = new Pen(Color.Black, 2);
 
-            if (isCuisinier && isParticulier)
+            if (isCuisinier && isClient)
             {
                 using (Pen orangePen = new Pen(Color.FromArgb(194, 233, 148), 5))//vert
                 using (Pen greenPen = new Pen(Color.FromArgb(233, 192, 44), 5))//beige
@@ -92,7 +92,7 @@ public class CuisinierClient : Form
             {
                 borderPen = new Pen(Color.FromArgb(194, 233, 148), 5); //vert
             }
-            else if (isParticulier)
+            else if (isClient)
             {
                 borderPen = new Pen(Color.FromArgb(233, 192, 44), 5); //beige
             }
@@ -124,6 +124,38 @@ public class CuisinierClient : Form
                 g.DrawLine(pen, start, end);
             }
         }
+        DrawLegend(g);
+    }
+    private void DrawLegend(Graphics g)
+    {
+        int legendX = 10; // Position X de la légende
+        int legendY = 10; // Position Y initiale de la légende
+        int legendSpacing = 20; // Espacement vertical entre les éléments de la légende
+        int legendRadius = 10; // Rayon des cercles dans la légende
+
+        Font font = new Font("Arial", 10);
+        Brush textBrush = Brushes.Black;
+
+        // Légende pour Cuisinier
+        g.FillEllipse(new SolidBrush(Color.FromArgb(194, 233, 148)), legendX, legendY, legendRadius, legendRadius);
+        g.DrawString("Cuisinier", font, textBrush, legendX + legendRadius + 5, legendY);
+
+        // Légende pour Client
+        legendY += legendSpacing;
+        g.FillEllipse(new SolidBrush(Color.FromArgb(233, 192, 44)), legendX, legendY, legendRadius, legendRadius);
+        g.DrawString("Client", font, textBrush, legendX + legendRadius + 5, legendY);
+        // Légende pour les deux (Cuisinier & Particulier)
+        legendY += legendSpacing;
+        using (Pen orangePen = new Pen(Color.FromArgb(194, 233, 148), 2))
+        using (Pen beigePen = new Pen(Color.FromArgb(233, 192, 44), 2))
+        {
+            Rectangle rect = new Rectangle(legendX, legendY, legendRadius * 2, legendRadius);
+            g.DrawArc(orangePen, rect, 0, 180);
+            g.DrawArc(beigePen, rect, 180, 180);
+        }
+        g.DrawString("Cuisinier & Particulier", font, textBrush, legendX + legendRadius * 2 + 5, legendY);
+
+        
     }
 
 

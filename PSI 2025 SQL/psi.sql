@@ -101,7 +101,7 @@ INSERT INTO Cuisinier VALUES
 
 -- Particulier
 INSERT INTO Particulier VALUES 
-(1, 'Martin', 'Sophie', 'Rue de Lyon', '69001', '0612345678', 'sophie.martin@mail.com', 'Bellecour'),
+(1, 'Martin', 'Sophie', 'Rue de Lyon', '75001', '0612345678', 'sophie.martin@mail.com', ' Saint-Paul (Le Marais)'),
 (2, 'Durand', 'Paul', 'Rue de Rivoli', '75001', '0623456789', 'paul.durand@mail.com', 'Châtelet'),
 (3, 'Leroy', 'Camille', 'Rue des Martyrs', '75009', '0634567890', 'camille.leroy@mail.com', 'Pigalle'),
 (4, 'Garcia', 'Nina', 'Rue du Faubourg', '75010', '0645678901', 'nina.garcia@mail.com', 'Bonne Nouvelle');
@@ -119,14 +119,17 @@ INSERT INTO Commande (IDCommande, DateCommande, AdresseLivraison, Satisfaction, 
 (2, '2024-03-29', 'Avenue des Champs, 50', 10, 2, NULL, 1),
 (3, '2024-03-28', 'Boulevard Voltaire, 20', 7, 3, NULL, 2),
 (4, '2024-03-27', 'Rue des Martyrs, 11', 9, 4, 3, NULL),
-(5, '2024-03-26', 'Rue Saint-Honoré, 78', 6, 1, NULL, 3);
+(5, '2024-03-26', 'Rue Saint-Honoré, 78', 6, 1, NULL, 3),
+(6, '2024-03-28', 'Rue de Rivoli, 78', 2, 4, 2, NULL),
+(7, '2024-03-22', 'Rue Taitbout, 78', 10, 4, NULL, 4);
 
 -- Plat
 INSERT INTO Plat VALUES 
 (1, 'Pizza Margherita', 12.50, 5, 'Italien', '2024-03-28', '2024-04-02', 'Végétarien', 'Italien', 1),
 (2, 'Sushi Saumon', 15.00, 10, 'Japonais', '2024-03-29', '2024-04-03', 'Pescetarien', 'Japonais', 2),
 (3, 'Burger Classic', 10.00, 7, 'Américain', '2024-03-27', '2024-04-01', 'Omnivore', 'Américain', 3),
-(4, 'Tacos Poulet', 11.00, 6, 'Mexicain', '2024-03-30', '2024-04-04', 'Halal', 'Mexicain', 4);
+(4, 'Tacos Poulet', 11.00, 6, 'Mexicain', '2024-03-30', '2024-04-04', 'Halal', 'Mexicain', 4),
+(5, 'Quiche aux lardons', 12.90,'7', 'Francais', '2024-03-30', '2024-04-04', 'Omnivore','Francais',4);
 
 -- Ingredient
 INSERT INTO Ingredient (IdIngredient, Nom, Quantite) VALUES 
@@ -154,4 +157,6 @@ INSERT INTO Contient VALUES
 (2, 2),                         
 (3, 3),                         
 (4, 4),                         
-(5, 2);                         
+(5, 2),
+(6,5),
+(7,2);                         

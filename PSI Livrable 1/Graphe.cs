@@ -18,7 +18,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             liens = new List<Lien<T>>();
             liste_Adjacence = new Dictionary<Noeud<T>, List<Noeud<T>>>();
         }
-
         /// <summary>
         /// Fonction de calcul de distance de Haversine entre 2 points
         /// </summary>
@@ -29,7 +28,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
         /// <returns> la distance entre les 2 points</returns>
         public static double HaversineDistance(double lat1, double lon1, double lat2, double lon2)
         {
-            //formule de calcul de distance de harversine
             double R = 6371; // Rayon de la Terre en kilomètres
             double dLat = (lat2 - lat1)*Math.PI/180;
             double dLon = (lon2 - lon1) * Math.PI / 180;
@@ -37,9 +35,8 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                        Math.Cos((lat1) * Math.PI / 180) * Math.Cos((lat2) * Math.PI / 180) *
                        Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             double c = 2 * Math.Asin(Math.Sqrt(a));
-            return R * c; // Distance en kilomètres
+            return R * c; 
         }
-
         /// <summary>
         /// on verifie si un noeud existe dans le graphe
         /// </summary>
@@ -49,7 +46,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
         {
             return noeuds.Contains(noeud);
         }
-
         /// <summary>
         /// Ajoute un noeud au graphe seulement si il n'existe pas
         /// </summary>
@@ -62,7 +58,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 liste_Adjacence[noeud] = new List<Noeud<T>>();
             }
         }
-
         /// <summary>
         /// Ajoute un lien au graphe seulement si les noeuds du lien existent et sont dans le grapge
         /// </summary>
@@ -380,6 +375,10 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
             return matriceFloyd;
         }
+        /// <summary>
+        /// Algorithme de coloration de graphe de Welsh-Powell
+        /// </summary>
+        /// <returns>un dictionnaire donnant la couleur de chaque sommet</returns>
         public Dictionary<Noeud<T>,int> Welsh_Powel()
         {
             Dictionary<Noeud<T>,int> couleurs = new Dictionary<Noeud<T>,int>();

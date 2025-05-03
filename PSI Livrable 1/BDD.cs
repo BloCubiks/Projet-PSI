@@ -24,6 +24,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     public class BDD
     {
+
         public static Dictionary<int, string> Cuisiniers()
         {
             string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
@@ -73,7 +74,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 
             return clients;
         }
-        public static Dictionary<int, int> Commandes()
+        public static List<(int, int)> Commandes()
         {
             string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
             MySqlConnection connection = new MySqlConnection(connectionString);
@@ -81,7 +82,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             MySqlCommand command = connection.CreateCommand();
             command.CommandText = "SELECT NumeroCuisinier,NumeroParticulier,NumeroEntreprise FROM Commande;";
             MySqlDataReader reader = command.ExecuteReader();
-            Dictionary<int, int> commandes = new Dictionary<int, int>();
+            List<(int, int)> commandes = new List<(int, int)>();
             while (reader.Read())
             {
                 int numeroCuisinier = reader.GetInt32(reader.GetOrdinal("NumeroCuisinier")); ;
@@ -89,14 +90,15 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 int numeroEntreprise = reader.IsDBNull(reader.GetOrdinal("NumeroEntreprise")) ? -1 : reader.GetInt32(reader.GetOrdinal("NumeroEntreprise")) + 2000;
                 if (numeroParticulier == -1)
                 {
-                    commandes[numeroCuisinier] = numeroEntreprise;
+                    commandes.Add((numeroCuisinier, numeroEntreprise));
                 }
-                else commandes[numeroCuisinier] = numeroParticulier;
+                else commandes.Add((numeroCuisinier, numeroParticulier));
             }
             return commandes;
         }
         public static void Appelle_BDD(Graphe<Station> graph)
         {
+            Application.SetCompatibleTextRenderingDefault(false);
             string choix = "";
             string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
             MySqlConnection connection = new MySqlConnection(connectionString);
@@ -108,10 +110,10 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 Console.Clear();
                 Console.WriteLine("Menu Principal");
                 Console.WriteLine("1. Gestion des clients");
-                Console.WriteLine("2. Gestion des commandes");
+                Console.WriteLine("2. Gestion des commandes // rendu 3");
                 Console.WriteLine("3. Gestion des cuisiniers");
                 Console.WriteLine("4. Gestion des plats");
-                Console.WriteLine("5. Module statistiques");
+                Console.WriteLine("5. Module statistiques // rendu 3");
                 Console.WriteLine("6. Démo");
                 Console.WriteLine("0. Quitter");
 
@@ -124,7 +126,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                         GestionClients(command, reader);
                         break;
                     case "2":
-                        GestionCommandes(command, reader);
+                        GestionCommandes(command, reader,graph);
                         break;
                     case "3":
                         GestionCuisinier(command, reader);
@@ -271,7 +273,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                         graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
                     }
                     Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD, true));
                 }
             }
@@ -778,7 +779,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.Clear();
         }
 
-        static void GestionCommandes(MySqlCommand command, MySqlDataReader reader)
+        static void GestionCommandes(MySqlCommand command, MySqlDataReader reader,Graphe<Station> graph)
         {
             string choix = "";
             while (choix != "0")
@@ -791,7 +792,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                     Console.WriteLine("2. Mettre à jour une commande");
                     Console.WriteLine("3. Supprimer une commande");
                     Console.WriteLine("4. Afficher les commandes existantes");
-                    Console.WriteLine("5. Afficher le contenu des commandes");
+                    Console.WriteLine("5. Afficher le contenu des commandes // rendu 3");
                     Console.WriteLine("0. Retourner au menu principal");
                     Console.Write("Entrez le numéro de l'action souhaitée : ");
                     choix = Console.ReadLine();
@@ -811,7 +812,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             AfficherCommande(command, reader);
                             break;
                         case "5":
-                            AfficherContenu(command, reader);
+                            AfficherContenu(command, reader, graph);
                             break;
                         case "0":
                             Console.WriteLine("Retour au menu principal...");
@@ -1125,7 +1126,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.ReadKey();
             Console.Clear();
         }
-        static void AfficherContenu(MySqlCommand command, MySqlDataReader reader)
+        static void AfficherContenu(MySqlCommand command, MySqlDataReader reader, Graphe<Station> graph)
         {
             Console.Clear();
 
@@ -1195,6 +1196,100 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                     Console.WriteLine($"    {reader["NomPlat"]} ({reader["Prix"]} euros)");
                 }
             }
+            reader.Close();
+            Console.WriteLine("Entrez l'ID d'une commande pour voir le trajet");
+            string metroC = null;
+            string metroE = null;
+            string metroP = null;
+            if (int.TryParse(Console.ReadLine(), out int idCommande))
+            {
+                command.CommandText =
+                "SELECT c.NomC, c.PrenomC, c.MetroC, p.NomP, p.PrenomP, p.MetroP, e.NomE, e.MetroE " +
+                "FROM Commande cmd " +
+                "JOIN Cuisinier c ON cmd.NumeroCuisinier = c.NumeroCuisinier " +
+                "LEFT JOIN Particulier p ON cmd.NumeroParticulier = p.NumeroParticulier " +
+                "LEFT JOIN Entreprise e ON cmd.NumeroEntreprise = e.NumeroEntreprise " +
+                $"WHERE cmd.IDCommande = {idCommande};";
+                reader = command.ExecuteReader();
+                Console.WriteLine("Informations des lignes de métro associées à la commande :");
+                while (reader.Read())
+                {
+                    metroC = reader["MetroC"].ToString();
+                    metroP = reader["MetroP"].ToString();
+                    metroE = reader["MetroE"].ToString();
+                    Console.WriteLine($" Cuisinier : {reader["NomC"]} {reader["PrenomC"]} - Métro : {metroC}");
+                    if (!reader.IsDBNull(reader.GetOrdinal("NomP")))
+                    {
+                        Console.WriteLine($" Particulier : {reader["NomP"]} {reader["PrenomP"]} - Métro : {metroP}");
+                    }
+                    
+                    else
+                    {
+                        Console.WriteLine($" Entreprise : {reader["NomE"]} - Métro : {metroE}");
+                    }
+                    
+
+                }
+                if (metroP == null|| metroP=="") metroP = metroE;
+                bool trouveS = false;
+                foreach (var station in graph.Noeuds)
+                {
+                    if (!trouveS && station.Type.LibelleStation.Equals(metroC))
+                    {
+                        trouveS = true;
+                        int[,] distances = graph.Dijkstra(station);
+                        bool trouveZ = false;
+                        Graphe<Station> graphD = new Graphe<Station>();
+                        List<Station> Parcours = new List<Station>();
+
+                        foreach (var noeud in graph.Noeuds)
+                        {
+                            if (!trouveZ && noeud.Type.LibelleStation.Equals(metroP))
+                            {
+                                Noeud<Station> precedent = noeud;
+                                trouveZ = true;
+                                Parcours.Add(precedent.Type);
+                                while (precedent.Id != station.Id)
+                                {
+                                    precedent = graph.Noeuds[distances[precedent.Id - 1, 1]];
+                                    Parcours.Add(precedent.Type);
+                                }
+                            }
+                        }
+
+                        Dictionary<Noeud<Station>, Station> nodeToStationD = new Dictionary<Noeud<Station>, Station>();
+                        Dictionary<Noeud<Station>, (double, double)> nodePositionsD = new Dictionary<Noeud<Station>, (double, double)>();
+
+                        // Ajouter les nœuds du parcours au nouveau graphe
+                        foreach (var etape in Parcours)
+                        {
+                            Noeud<Station> noeud = new Noeud<Station>(etape.IdStation, etape);
+                            graphD.AjouterNoeud(noeud);
+                            nodeToStationD[noeud] = etape;
+                            nodePositionsD[noeud] = (etape.Longitude, etape.Latitude);
+                        }
+
+                        // Ajouter les liens entre les nœuds du parcours
+                        for (int i = 0; i < Parcours.Count - 1; i++)
+                        {
+                            Noeud<Station> nodeStart = graphD.Noeuds[i];
+                            Noeud<Station> nodeEnd = graphD.Noeuds[i + 1];
+
+                            double distance = Graphe<Station>.HaversineDistance(Parcours[i].Latitude, Parcours[i].Longitude, Parcours[i + 1].Latitude, Parcours[i + 1].Longitude);
+                            int travelTime = (int)Math.Round(distance * 2);
+                            graphD.AjouterLien(new Lien<Station>(nodeStart, nodeEnd, travelTime, Parcours[i].LibelleLine));
+                            graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
+                        }
+                        Application.EnableVisualStyles();
+                        Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD, true));
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("ID invalide.");
+            }
+
 
             reader.Close();
             Console.WriteLine("\nAppuyez sur une touche pour continuer...");
@@ -1680,8 +1775,6 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.ReadKey();
             Console.Clear();
         }
-
-
 
 
         static void Read(MySqlCommand command, MySqlDataReader reader, string commandText)

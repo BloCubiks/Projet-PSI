@@ -82,8 +82,8 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 Console.WriteLine("4. Utiliser l'algorithme de Dijkstra");
                 Console.WriteLine("5. Utiliser l'algorithme de Bellman-Ford");
                 Console.WriteLine("6. Utiliser l'algorithme de Floyd-Warshall");
-                Console.WriteLine("7. Se connecter à la base de donnée");
-                Console.WriteLine("8. Afficher le graphe cuisinier client");
+                Console.WriteLine("7. Se connecter à la base de donnée // rendu 3");
+                Console.WriteLine("8. Afficher le graphe cuisinier client // rendu 3");
                 Console.WriteLine("9. Quitter l'application");
                 Console.Write("Entrez votre choix : ");
                 string input = Console.ReadLine();
@@ -347,7 +347,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             Graphe<string> grapheCommande = new Graphe<string>();
                             Dictionary<int,string> cuisiniers = BDD.Cuisiniers();
                             Dictionary<int, string> clients = BDD.Clients();
-                            Dictionary<int, int> commandes = BDD.Commandes();
+                            List<(int, int)> commandes = BDD.Commandes();
                             
                             foreach (int id in cuisiniers.Keys)
                             {
@@ -359,10 +359,10 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                                 Noeud<string> noeud = new Noeud<string>(id + 4000, clients[id]); //on additionne 4000 pour ne pas avoir de doublon avec les cuisiniers
                                 grapheCommande.AjouterNoeud(noeud);
                             }
-                            foreach (int commande in commandes.Keys)
+                            foreach (var commande in commandes)
                             {
-                                int idCuisinier = commande;
-                                int idClient = commandes[commande];
+                                int idCuisinier = commande.Item1;
+                                int idClient = commande.Item2;
                                 string nomCuisinier = cuisiniers[idCuisinier];
                                 string nomClient = clients[idClient];
                                 Noeud<string> noeudCuisinier = grapheCommande.Noeuds.FirstOrDefault(n => n.Id == idCuisinier);
@@ -372,6 +372,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                                     grapheCommande.AjouterLien(new Lien<string>(noeudCuisinier, noeudClient, 1));
                                 }
                             }
+                            Console.WriteLine(grapheCommande.Liens.Count + " liens ajoutés au graphe cuisinier-client.\r\n");
                             Dictionary<Noeud<string>,int> couleurs = grapheCommande.Welsh_Powel();
                             CuisinierClient.VisualiserGraphe(grapheCommande, cuisiniers, clients, couleurs);
 
