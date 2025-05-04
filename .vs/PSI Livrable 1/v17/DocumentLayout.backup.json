@@ -3,11 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\psi livrable 1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|solutionrelative:psi livrable 1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\psi livrable 1\\xml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|c:\\users\\overz\\onedrive\\documents\\github\\projet-psi\\projet-psi\\psi livrable 1\\xml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|solutionrelative:psi livrable 1\\xml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -23,7 +19,11 @@
       "RelativeMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|solutionrelative:psi livrable 1\\xmsexport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|c:\\users\\overz\\onedrive\\documents\\github\\projet-psi\\projet-psi\\psi livrable 1\\bdd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\psi livrable 1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|solutionrelative:psi livrable 1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\psi livrable 1\\bdd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D2C99470-223D-444E-BBAA-4E8CEF3F5B70}|PSI Livrable 1\\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj|solutionrelative:psi livrable 1\\bdd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -34,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,12 +50,11 @@
               "RelativeToolTip": "PSI Livrable 1\\BDD.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAWwB8AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T17:34:34.476Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-04T17:34:34.476Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\Program.cs",
               "RelativeDocumentMoniker": "PSI Livrable 1\\Program.cs",
@@ -63,25 +62,23 @@
               "RelativeToolTip": "PSI Livrable 1\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAqwA8AAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T17:34:09.375Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-04T17:34:09.375Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "XMSExport.cs",
               "DocumentMoniker": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\XMSExport.cs",
               "RelativeDocumentMoniker": "PSI Livrable 1\\XMSExport.cs",
               "ToolTip": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\XMSExport.cs",
               "RelativeToolTip": "PSI Livrable 1\\XMSExport.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAjwCQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T17:25:08.713Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-04T17:25:08.713Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "JSONExport.cs",
               "DocumentMoniker": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\JSONExport.cs",
               "RelativeDocumentMoniker": "PSI Livrable 1\\JSONExport.cs",
@@ -89,31 +86,29 @@
               "RelativeToolTip": "PSI Livrable 1\\JSONExport.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T17:24:53.928Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-04T17:24:53.928Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "JSON.cs",
               "DocumentMoniker": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\JSON.cs",
               "RelativeDocumentMoniker": "PSI Livrable 1\\JSON.cs",
               "ToolTip": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\JSON.cs",
               "RelativeToolTip": "PSI Livrable 1\\JSON.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAB4AAAAAAAAAA==",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAkwM0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T12:57:53.492Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-04T12:57:53.492Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "XML.cs",
               "DocumentMoniker": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\XML.cs",
               "RelativeDocumentMoniker": "PSI Livrable 1\\XML.cs",
               "ToolTip": "C:\\Users\\overz\\OneDrive\\Documents\\GitHub\\Projet-PSI\\Projet-PSI\\PSI Livrable 1\\XML.cs",
               "RelativeToolTip": "PSI Livrable 1\\XML.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAAkwMcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-04T12:45:05.121Z",
               "EditorCaption": ""

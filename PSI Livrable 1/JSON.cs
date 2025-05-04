@@ -114,10 +114,14 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 
                     string dateStr = (string)c.DateCommande;
                     DateTime parsedDate;
-                    if (!DateTime.TryParse(dateStr, null, System.Globalization.DateTimeStyles.AdjustToUniversal, out parsedDate))
+                    try
                     {
-                        Console.WriteLine($"Date invalide pour la commande ID {c.IDCommande}: '{dateStr}'");
-                        continue; // saute cette entrée
+                        parsedDate = DateTime.Parse(dateStr, null, System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal);
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine($"[ERREUR] Format de date invalide pour ID {c.IDCommande} : '{dateStr}'");
+                        continue; 
                     }
 
                     cmd.Parameters.AddWithValue("@date", parsedDate);
@@ -130,6 +134,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 }
             }
         }
+
 
         static void InsertPlats(string filePath)
         {
