@@ -82,3 +82,9 @@ C:\Users\Jaime\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_ClovisNO
 C:\Users\Jaime\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_Clov.C0ECBCC6.Up2Date
 C:\Users\Jaime\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.exe
 C:\Users\Jaime\Documents\GitHub\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.pdb
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj.AssemblyReference.cache
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.Visualisation.resources
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj.GenerateResource.cache
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE.csproj.CoreCompileInputs.cache
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.exe
+C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\obj\Debug\PSI Livrable 1.pdb

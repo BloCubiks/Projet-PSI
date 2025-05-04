@@ -15,7 +15,7 @@ namespace PSI_Livrable_1
     {
         static string connectionString = "server=localhost;user=root;password=root;database=psi;";
 
-        static void Main(string[] args)
+        static void Import(string[] args)
         {
             InsertCuisiniers("Cuisiniers.json");
             InsertParticuliers("Particuliers.json");
@@ -193,41 +193,6 @@ namespace PSI_Livrable_1
                     cmd.Parameters.AddWithValue("@plat", (int)c.IdPlat);
                     cmd.ExecuteNonQuery();
                 }
-            }
-        }
-    }
-    class ExportJson
-    {
-        static string connectionString = "Server=localhost;Database=psi;Trusted_Connection=True;";
-
-        static void Main(string[] args)
-        {
-            ExportTableToJson("Cuisinier");
-            ExportTableToJson("Particulier");
-            ExportTableToJson("Entreprise");
-            ExportTableToJson("Commande");
-            ExportTableToJson("Plat");
-            ExportTableToJson("Ingredient");
-            ExportTableToJson("EstCompose");
-            ExportTableToJson("Contient");
-
-            Console.WriteLine("Export JSON terminé.");
-        }
-
-        static void ExportTableToJson(string tableName)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = $"SELECT * FROM {tableName}";
-
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-
-                string json = JsonConvert.SerializeObject(dt, Formatting.Indented);
-                File.WriteAllText($"{tableName}.json", json);
-
-                Console.WriteLine($"{tableName}.json exporté.");
             }
         }
     }

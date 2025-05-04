@@ -196,41 +196,4 @@ namespace PSI_Livrable_1
             }
         }
     }
-    class ExportXML
-    {
-        static string connectionString = "Server=localhost;Database=psi;Trusted_Connection=True;";
-
-        static void Main(string[] args)
-        {
-            ExportTableToXml("Cuisinier");
-            ExportTableToXml("Particulier");
-            ExportTableToXml("Entreprise");
-            ExportTableToXml("Commande");
-            ExportTableToXml("Plat");
-            ExportTableToXml("Ingredient");
-            ExportTableToXml("EstCompose");
-            ExportTableToXml("Contient");
-
-            Console.WriteLine("Export XML terminé.");
-        }
-
-        static void ExportTableToXml(string tableName)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = $"SELECT * FROM {tableName}";
-
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                DataTable dt = new DataTable(tableName);
-                adapter.Fill(dt);
-
-                using (FileStream fs = new FileStream($"{tableName}.xml", FileMode.Create))
-                {
-                    dt.WriteXml(fs, XmlWriteMode.WriteSchema);
-                }
-
-                Console.WriteLine($"{tableName}.xml exporté.");
-            }
-        }
-    }
 }
