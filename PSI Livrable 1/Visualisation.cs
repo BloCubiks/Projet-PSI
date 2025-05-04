@@ -81,9 +81,9 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             this.ponderation = ponderation;
             this.Text = "Visualisation du Graphe";
             this.Size = new Size(800, 600);
-            this.MinimumSize = new Size(500, 400);  // Optionnel: définir une taille minimale pour la fenêtre
-            this.Resize += OnResize;  // S'abonner à l'événement de redimensionnement
-            InitializeScaling();  // Initialisation des échelles
+            this.MinimumSize = new Size(500, 400);  
+            this.Resize += OnResize; 
+            InitializeScaling();  
 
             InitializeLineColors();
             dejadessine = new List<string>();
@@ -112,38 +112,38 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 
         private void InitializeLineColors()
         {
-            // Associer chaque ligne de métro à sa couleur conventionnelle
+            
             lineColors = new Dictionary<string, Color>
         {
-        { "1", ColorTranslator.FromHtml("#FFCE00") },    // Ligne 1 - Jaune
-        { "2", ColorTranslator.FromHtml("#0064B0") },    // Ligne 2 - Bleu
-        { "3", ColorTranslator.FromHtml("#9F9825") },    // Ligne 3 - Vert
-        { "3bis", ColorTranslator.FromHtml("#98D4E2") }, // Ligne 3 bis - Bleu clair
-        { "4", ColorTranslator.FromHtml("#C04191") },    // Ligne 4 - Violet
-        { "5", ColorTranslator.FromHtml("#F28E42") },    // Ligne 5 - Orange
-        { "6", ColorTranslator.FromHtml("#83C491") },    // Ligne 6 - Vert pâle
-        { "7", ColorTranslator.FromHtml("#F3A4BA") },    // Ligne 7 - Rose
-        { "7bis", ColorTranslator.FromHtml("#83C491") }, // Ligne 7 bis - Vert pâle
-        { "8", ColorTranslator.FromHtml("#CEADD2") },    // Ligne 8 - Lavande
-        { "9", ColorTranslator.FromHtml("#D5C900") },    // Ligne 9 - Jaune vif
-        { "10", ColorTranslator.FromHtml("#E3B32A") },   // Ligne 10 - Or
-        { "11", ColorTranslator.FromHtml("#8D5E2A") },   // Ligne 11 - Brun
-        { "12", ColorTranslator.FromHtml("#00814F") },   // Ligne 12 - Vert foncé
-        { "13", ColorTranslator.FromHtml("#98D4E2") },   // Ligne 13 - Bleu clair
-        { "14", ColorTranslator.FromHtml("#662483") },   // Ligne 14 - Violet foncé
-        { "15", ColorTranslator.FromHtml("#B90845") },   // Ligne 15 - Rouge
-        { "16", ColorTranslator.FromHtml("#F3A4BA") },   // Ligne 16 - Rose
-        { "17", ColorTranslator.FromHtml("#D5C900") },   // Ligne 17 - Jaune vif
-        { "18", ColorTranslator.FromHtml("#00A88F") },   // Ligne 18 - Turquoise
+        { "1", ColorTranslator.FromHtml("#FFCE00") },
+        { "2", ColorTranslator.FromHtml("#0064B0") },
+        { "3", ColorTranslator.FromHtml("#9F9825") },
+        { "3bis", ColorTranslator.FromHtml("#98D4E2") },
+        { "4", ColorTranslator.FromHtml("#C04191") },
+        { "5", ColorTranslator.FromHtml("#F28E42") },
+        { "6", ColorTranslator.FromHtml("#83C491") },
+        { "7", ColorTranslator.FromHtml("#F3A4BA") },
+        { "7bis", ColorTranslator.FromHtml("#83C491") },
+        { "8", ColorTranslator.FromHtml("#CEADD2") },
+        { "9", ColorTranslator.FromHtml("#D5C900") },
+        { "10", ColorTranslator.FromHtml("#E3B32A") },
+        { "11", ColorTranslator.FromHtml("#8D5E2A") },
+        { "12", ColorTranslator.FromHtml("#00814F") },
+        { "13", ColorTranslator.FromHtml("#98D4E2") },
+        { "14", ColorTranslator.FromHtml("#662483") },
+        { "15", ColorTranslator.FromHtml("#B90845") },
+        { "16", ColorTranslator.FromHtml("#F3A4BA") },
+        { "17", ColorTranslator.FromHtml("#D5C900") },
+        { "18", ColorTranslator.FromHtml("#00A88F") },
             };
         }
 
 
         private void OnResize(object sender, EventArgs e)
         {
-            // Recalculez les échelles chaque fois que la fenêtre est redimensionnée
+         
             InitializeScaling();
-            this.Invalidate();  // Redessiner le contenu de la fenêtre
+            this.Invalidate();  
             dejadessine.Clear();
             drawnLines.Clear();
         }
