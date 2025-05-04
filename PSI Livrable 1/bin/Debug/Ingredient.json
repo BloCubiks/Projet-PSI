@@ -1,0 +1,52 @@
+[
+  {
+    "IdIngredient": 1,
+    "Nom": "Tomate",
+    "Quantite": 10
+  },
+  {
+    "IdIngredient": 2,
+    "Nom": "Mozzarella",
+    "Quantite": 5
+  },
+  {
+    "IdIngredient": 3,
+    "Nom": "Basilic",
+    "Quantite": 2
+  },
+  {
+    "IdIngredient": 4,
+    "Nom": "Saumon",
+    "Quantite": 4
+  },
+  {
+    "IdIngredient": 5,
+    "Nom": "Riz",
+    "Quantite": 6
+  },
+  {
+    "IdIngredient": 6,
+    "Nom": "Viande hachée",
+    "Quantite": 8
+  },
+  {
+    "IdIngredient": 7,
+    "Nom": "Pain burger",
+    "Quantite": 6
+  },
+  {
+    "IdIngredient": 8,
+    "Nom": "Poulet mariné",
+    "Quantite": 5
+  },
+  {
+    "IdIngredient": 9,
+    "Nom": "Tortilla",
+    "Quantite": 4
+  },
+  {
+    "IdIngredient": 10,
+    "Nom": "Avocat",
+    "Quantite": 3
+  }
+]

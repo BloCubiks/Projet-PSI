@@ -1,0 +1,62 @@
+[
+  {
+    "IdPlat": 1,
+    "NomPlat": "Pizza Margherita",
+    "Prix": 12.50,
+    "Quantite": 5,
+    "TypePlat": "Italien",
+    "DateFabrication": "2024-03-28T00:00:00",
+    "DatePeremption": "2024-04-02T00:00:00",
+    "RegimeAlim": "Végétarien",
+    "Nationalite": "Italien",
+    "NumeroCuisinier": 1
+  },
+  {
+    "IdPlat": 2,
+    "NomPlat": "Sushi Saumon",
+    "Prix": 15.00,
+    "Quantite": 10,
+    "TypePlat": "Japonais",
+    "DateFabrication": "2024-03-29T00:00:00",
+    "DatePeremption": "2024-04-03T00:00:00",
+    "RegimeAlim": "Pescetarien",
+    "Nationalite": "Japonais",
+    "NumeroCuisinier": 2
+  },
+  {
+    "IdPlat": 3,
+    "NomPlat": "Burger Classic",
+    "Prix": 10.00,
+    "Quantite": 7,
+    "TypePlat": "Américain",
+    "DateFabrication": "2024-03-27T00:00:00",
+    "DatePeremption": "2024-04-01T00:00:00",
+    "RegimeAlim": "Omnivore",
+    "Nationalite": "Américain",
+    "NumeroCuisinier": 3
+  },
+  {
+    "IdPlat": 4,
+    "NomPlat": "Tacos Poulet",
+    "Prix": 11.00,
+    "Quantite": 6,
+    "TypePlat": "Mexicain",
+    "DateFabrication": "2024-03-30T00:00:00",
+    "DatePeremption": "2024-04-04T00:00:00",
+    "RegimeAlim": "Halal",
+    "Nationalite": "Mexicain",
+    "NumeroCuisinier": 4
+  },
+  {
+    "IdPlat": 5,
+    "NomPlat": "Quiche aux lardons",
+    "Prix": 12.90,
+    "Quantite": 7,
+    "TypePlat": "Francais",
+    "DateFabrication": "2024-03-30T00:00:00",
+    "DatePeremption": "2024-04-04T00:00:00",
+    "RegimeAlim": "Omnivore",
+    "Nationalite": "Francais",
+    "NumeroCuisinier": 4
+  }
+]

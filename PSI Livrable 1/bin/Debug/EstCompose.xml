@@ -55,4 +55,44 @@
     <IdPlat>4</IdPlat>
     <IdIngredient>10</IdIngredient>
   </EstCompose>
+  <EstCompose>
+    <IdPlat>1</IdPlat>
+    <IdIngredient>1</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>1</IdPlat>
+    <IdIngredient>2</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>1</IdPlat>
+    <IdIngredient>3</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>2</IdPlat>
+    <IdIngredient>4</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>2</IdPlat>
+    <IdIngredient>5</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>3</IdPlat>
+    <IdIngredient>6</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>3</IdPlat>
+    <IdIngredient>7</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>4</IdPlat>
+    <IdIngredient>8</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>4</IdPlat>
+    <IdIngredient>9</IdIngredient>
+  </EstCompose>
+  <EstCompose>
+    <IdPlat>4</IdPlat>
+    <IdIngredient>10</IdIngredient>
+  </EstCompose>
 </NewDataSet>

@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using System.Data.SqlClient;
 using System.Data;
 using System.IO;
+using System.Globalization;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
@@ -131,7 +132,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", (int)element.Element("IdPlat"));
                     cmd.Parameters.AddWithValue("@nom", (string)element.Element("NomPlat"));
-                    cmd.Parameters.AddWithValue("@prix", decimal.Parse((string)element.Element("Prix")));
+                    cmd.Parameters.AddWithValue("@prix", decimal.Parse((string)element.Element("Prix"), CultureInfo.InvariantCulture));
                     cmd.Parameters.AddWithValue("@quantite", int.Parse((string)element.Element("Quantite")));
                     cmd.Parameters.AddWithValue("@type", (string)element.Element("TypePlat"));
                     cmd.Parameters.AddWithValue("@dateFab", DateTime.Parse((string)element.Element("DateFabrication")));

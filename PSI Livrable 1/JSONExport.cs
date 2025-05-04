@@ -31,11 +31,11 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 
         public static void ExportTableToJson(string tableName)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string query = $"SELECT * FROM {tableName}";
 
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
 

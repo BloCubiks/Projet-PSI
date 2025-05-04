@@ -12,19 +12,15 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     static class Program
     {
-        
+
         static void Main()
         {
-            XMSExport.XMLExport();
-            XML.Import();
-            ExportJson.JsonExport();
-            JSON.Import();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             // Initialisation de la liste des stations et du graphe
             string filePath = "MetroParis.csv";
             List<Station> stations = LireCSV(filePath);
-            Dictionary<string, List<Station>> Lignes = new Dictionary<string, List<Station>>(); 
+            Dictionary<string, List<Station>> Lignes = new Dictionary<string, List<Station>>();
             Dictionary<string, int> doublons = new Dictionary<string, int>();
             Dictionary<Noeud<Station>, Station> nodeToStation = new Dictionary<Noeud<Station>, Station>();
             Dictionary<Noeud<Station>, (double, double)> nodePositions = new Dictionary<Noeud<Station>, (double, double)>();
@@ -35,12 +31,12 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             {
                 Noeud<Station> noeud = new Noeud<Station>(station.IdStation, station);
                 graph.AjouterNoeud(noeud);
-                
+
                 //gestion d'une station presente dans 2 lignes
                 if (doublons.ContainsKey(noeud.Type.LibelleStation) && doublons[noeud.Type.LibelleStation] != noeud.Id)
                 {
-                    graph.AjouterLien(new Lien<Station>(noeud, graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], 2));
-                    graph.AjouterLien(new Lien<Station>(graph.Noeuds[doublons[noeud.Type.LibelleStation]-1], noeud, 2));
+                    graph.AjouterLien(new Lien<Station>(noeud, graph.Noeuds[doublons[noeud.Type.LibelleStation] - 1], 2));
+                    graph.AjouterLien(new Lien<Station>(graph.Noeuds[doublons[noeud.Type.LibelleStation] - 1], noeud, 2));
                 }
                 doublons[station.LibelleStation] = noeud.Id;
 
@@ -65,7 +61,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                     Noeud<Station> nodeEnd = sorted[i + 1];
 
                     double distance = Graphe<Station>.HaversineDistance(sorted[i].Type.Latitude, sorted[i].Type.Longitude, sorted[i + 1].Type.Latitude, sorted[i + 1].Type.Longitude);
-                    int travelTime = (int)Math.Round(distance*2);
+                    int travelTime = (int)Math.Round(distance * 2);
                     graph.AjouterLien(new Lien<Station>(nodeStart, nodeEnd, travelTime, group.Key));
                     graph.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, group.Key));
                 }
@@ -89,10 +85,11 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 Console.WriteLine("6. Utiliser l'algorithme de Floyd-Warshall");
                 Console.WriteLine("7. Se connecter à la base de donnée // rendu 3");
                 Console.WriteLine("8. Afficher le graphe cuisinier client // rendu 3");
-                Console.WriteLine("9. Quitter l'application");
+                Console.WriteLine("9. Afficher le menu d'Import/Export XML JSON // rendu 3");
+                Console.WriteLine("10. Quitter l'application");
                 Console.Write("Entrez votre choix : ");
                 string input = Console.ReadLine();
-                if (!int.TryParse(input, out choix) || choix < 1 || choix > 9)
+                if (!int.TryParse(input, out choix) || choix < 1 || choix > 10)
                 {
                     Console.WriteLine("Choix invalide. Veuillez réessayer.");
                 }
@@ -220,7 +217,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                                         graphD.AjouterLien(new Lien<Station>(nodeEnd, nodeStart, travelTime, Parcours[i].LibelleLine));
                                     }
 
-                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD,true));
+                                    Application.Run(new Visualisation<Station>(graphD, nodeToStationD, nodePositionsD, true));
                                     Console.WriteLine("Fermez le plan pour continuer.\r\n");
                                     if (!trouveZ)
                                     {
@@ -232,7 +229,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             {
                                 Console.WriteLine("Station de départ non trouvée dans le graphe.");
                             }
-                            
+
                             Console.WriteLine("Appuyez sur une touche pour continuer...");
                             Console.ReadKey();
                             break;
@@ -350,10 +347,10 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                             break;
                         case 8:
                             Graphe<string> grapheCommande = new Graphe<string>();
-                            Dictionary<int,string> cuisiniers = BDD.Cuisiniers();
+                            Dictionary<int, string> cuisiniers = BDD.Cuisiniers();
                             Dictionary<int, string> clients = BDD.Clients();
                             List<(int, int)> commandes = BDD.Commandes();
-                            
+
                             foreach (int id in cuisiniers.Keys)
                             {
                                 Noeud<string> noeud = new Noeud<string>(id, cuisiniers[id]);
@@ -378,26 +375,67 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                                 }
                             }
                             Console.WriteLine(grapheCommande.Liens.Count + " liens ajoutés au graphe cuisinier-client.\r\n");
-                            Dictionary<Noeud<string>,int> couleurs = grapheCommande.Welsh_Powel();
+                            Dictionary<Noeud<string>, int> couleurs = grapheCommande.Welsh_Powel();
                             CuisinierClient.VisualiserGraphe(grapheCommande, cuisiniers, clients, couleurs);
 
                             break;
                         case 9:
+
+                            bool fin2 = false;
+                            while (!fin2)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Bienvenue dans le menu d'Import/Export XML JSON\r\n");
+                                Console.WriteLine("Veuillez choisir une option :");
+                                Console.WriteLine("1. Exporter en XML");
+                                Console.WriteLine("2. Importer les fichiers XML");
+                                Console.WriteLine("3. Exporter en JSON");
+                                Console.WriteLine("4. Importer les fichiers JSON");
+                                Console.WriteLine("5. Quitter le menu");
+                                string input2 = Console.ReadLine();
+                                int choice = -1;
+                                if (!int.TryParse(input2, out choice) || choice < 1 || choice > 5)
+                                {
+                                    Console.WriteLine("Choix invalide. Veuillez réessayer.");
+                                }
+                                else
+                                {
+                                    switch (choice)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Exportation des fichiers XML...");
+                                            XMSExport.XMLExport();
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("Importation des fichiers XML...");
+                                            XML.Import();
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("Exportation des fichiers JSON...");
+                                            ExportJson.JsonExport();
+                                            break;
+                                        case 4:
+                                            Console.WriteLine("Importation des fichiers JSON...");
+                                            JSON.Import();
+                                            break;
+                                        case 5:
+                                            Console.WriteLine("Quitter le menu d'Import/Export XML JSON.");
+                                            fin2 = true;
+                                            break;
+                                    }
+                                    Console.WriteLine("Appuyez sur une touche pour continuer...");
+                                    Console.ReadKey();
+                                }
+                            }
+                            break;
+                        case 10:
                             fin = true;
                             break;
                     }
                 }
                 Console.Clear();
             }
-            while (choix < 1 || choix > 9)
-            {
-                Console.Write("Entrez votre choix : ");
-                string input = Console.ReadLine();
-                if (!int.TryParse(input, out choix) || choix < 1 || choix > 9)
-                {
-                    Console.WriteLine("Choix invalide. Veuillez réessayer.");
-                }
-            }
+
         }
 
         static List<Station> LireCSV(string filePath)
@@ -405,7 +443,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             List<Station> stations = new List<Station>();
             using (var reader = new StreamReader(filePath))
             {
-                string header = reader.ReadLine(); 
+                string header = reader.ReadLine();
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();

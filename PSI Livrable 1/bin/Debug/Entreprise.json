@@ -1,0 +1,42 @@
+[
+  {
+    "NumeroEntreprise": 1,
+    "NomE": "TechCorp",
+    "ContactE": "Julie Morel",
+    "AdresseE": "Avenue des Champs",
+    "CodePostalE": "75008",
+    "TelE": "0634567890",
+    "EmailE": "contact@techcorp.com",
+    "MetroE": "Franklin D. Roosevelt"
+  },
+  {
+    "NumeroEntreprise": 2,
+    "NomE": "DataSoft",
+    "ContactE": "Marc Legrand",
+    "AdresseE": "Boulevard Voltaire",
+    "CodePostalE": "75011",
+    "TelE": "0645678901",
+    "EmailE": "marc.legrand@datasoft.com",
+    "MetroE": "République"
+  },
+  {
+    "NumeroEntreprise": 3,
+    "NomE": "GreenTech",
+    "ContactE": "Alice Marchand",
+    "AdresseE": "Rue Saint-Honoré",
+    "CodePostalE": "75001",
+    "TelE": "0656789012",
+    "EmailE": "alice.marchand@greentech.com",
+    "MetroE": "Palais Royal - Musée du Louvre"
+  },
+  {
+    "NumeroEntreprise": 4,
+    "NomE": "CodeLab",
+    "ContactE": "Olivier Dubois",
+    "AdresseE": "Rue Taitbout",
+    "CodePostalE": "75009",
+    "TelE": "0667890123",
+    "EmailE": "olivier.dubois@codelab.com",
+    "MetroE": "Trinité - d'Estienne d'Orves"
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "NumeroCuisinier": 1,
+    "NomC": "Dupont",
+    "PrenomC": "Jean",
+    "AdresseC": "Rue de Paris",
+    "CodePostalC": "75001",
+    "VilleC": "Paris",
+    "TelC": "0601020304",
+    "EmailC": "jean.dupont@mail.com",
+    "MetroC": "Châtelet"
+  },
+  {
+    "NumeroCuisinier": 2,
+    "NomC": "Lemoine",
+    "PrenomC": "Claire",
+    "AdresseC": "Boulevard Haussmann",
+    "CodePostalC": "75009",
+    "VilleC": "Paris",
+    "TelC": "0611223344",
+    "EmailC": "claire.lemoine@mail.com",
+    "MetroC": "Opéra"
+  },
+  {
+    "NumeroCuisinier": 3,
+    "NomC": "Bernard",
+    "PrenomC": "Luc",
+    "AdresseC": "Rue Lafayette",
+    "CodePostalC": "75010",
+    "VilleC": "Paris",
+    "TelC": "0622334455",
+    "EmailC": "luc.bernard@mail.com",
+    "MetroC": "Gare du Nord"
+  },
+  {
+    "NumeroCuisinier": 4,
+    "NomC": "Nguyen",
+    "PrenomC": "Thierry",
+    "AdresseC": "Rue Oberkampf",
+    "CodePostalC": "75011",
+    "VilleC": "Paris",
+    "TelC": "0677889900",
+    "EmailC": "thierry.nguyen@mail.com",
+    "MetroC": "Lourmel"
+  }
+]

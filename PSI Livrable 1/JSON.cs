@@ -33,7 +33,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO Cuisinier (NumeroCuisinier, Nom, Prenom, Adresse, CodePostal, Ville, Tel, Email, Metro) " +
+                    string query = "INSERT IGNORE INTO Cuisinier  " +
                                    "VALUES (@id, @nom, @prenom, @adresse, @cp, @ville, @tel, @email, @metro)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", (int)c.NumeroCuisinier);
@@ -58,7 +58,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO Particulier (NumeroParticulier, Nom, Prenom, Adresse, CodePostal, Tel, Email, Metro) " +
+                    string query = "INSERT IGNORE INTO Particulier  " +
                                    "VALUES (@id, @nom, @prenom, @adresse, @cp, @tel, @email, @metro)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", (int)p.NumeroParticulier);
@@ -82,7 +82,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO Entreprise (NumeroEntreprise, Nom, Contact, Adresse, CodePostal, Tel, Email, Metro) " +
+                    string query = "INSERT IGNORE INTO Entreprise  " +
                                    "VALUES (@id, @nom, @contact, @adresse, @cp, @tel, @email, @metro)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", (int)e.NumeroEntreprise);
@@ -106,11 +106,21 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO Commande (IDCommande, DateCommande, AdresseLivraison, Satisfaction, NumeroCuisinier, NumeroParticulier, NumeroEntreprise) " +
+                    string query = "INSERT IGNORE INTO Commande  " +
                                    "VALUES (@id, @date, @adresse, @satisfaction, @cuisinier, @particulier, @entreprise)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
+
                     cmd.Parameters.AddWithValue("@id", (int)c.IDCommande);
-                    cmd.Parameters.AddWithValue("@date", DateTime.Parse((string)c.DateCommande));
+
+                    string dateStr = (string)c.DateCommande;
+                    DateTime parsedDate;
+                    if (!DateTime.TryParse(dateStr, null, System.Globalization.DateTimeStyles.AdjustToUniversal, out parsedDate))
+                    {
+                        Console.WriteLine($"Date invalide pour la commande ID {c.IDCommande}: '{dateStr}'");
+                        continue; // saute cette entrée
+                    }
+
+                    cmd.Parameters.AddWithValue("@date", parsedDate);
                     cmd.Parameters.AddWithValue("@adresse", (string)c.AdresseLivraison);
                     cmd.Parameters.AddWithValue("@satisfaction", (int)c.Satisfaction);
                     cmd.Parameters.AddWithValue("@cuisinier", c.NumeroCuisinier != null ? (int)c.NumeroCuisinier : (object)DBNull.Value);
@@ -129,7 +139,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO Plat (IdPlat, Nom, Prix, Quantite, TypePlat, DateFabrication, DatePeremption, RegimeAlim, Nationalite, NumeroCuisinier) " +
+                    string query = "INSERT IGNORE INTO Plat  " +
                                    "VALUES (@id, @nom, @prix, @quantite, @type, @dateFab, @datePer, @regime, @nat, @cuisinier)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", (int)p.IdPlat);
@@ -137,8 +147,8 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                     cmd.Parameters.AddWithValue("@prix", (decimal)p.Prix);
                     cmd.Parameters.AddWithValue("@quantite", (int)p.Quantite);
                     cmd.Parameters.AddWithValue("@type", (string)p.TypePlat);
-                    cmd.Parameters.AddWithValue("@dateFab", DateTime.Parse((string)p.DateFabrication));
-                    cmd.Parameters.AddWithValue("@datePer", DateTime.Parse((string)p.DatePeremption));
+                    cmd.Parameters.AddWithValue("@dateFab", DateTime.Parse((string)p.DateFabrication).ToUniversalTime());
+                    cmd.Parameters.AddWithValue("@datePer", DateTime.Parse((string)p.DatePeremption).ToUniversalTime());
                     cmd.Parameters.AddWithValue("@regime", (string)p.RegimeAlim);
                     cmd.Parameters.AddWithValue("@nat", (string)p.Nationalite);
                     cmd.Parameters.AddWithValue("@cuisinier", (int)p.NumeroCuisinier);
@@ -155,7 +165,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO Ingredient (IdIngredient, Nom, Quantite) " +
+                    string query = "INSERT IGNORE INTO Ingredient " +
                                    "VALUES (@id, @nom, @quantite)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", (int)i.IdIngredient);
@@ -174,7 +184,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO EstCompose (IdPlat, IdIngredient) " +
+                    string query = "INSERT IGNORE INTO EstCompose  " +
                                    "VALUES (@plat, @ingredient)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@plat", (int)ec.IdPlat);
@@ -192,7 +202,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "INSERT IGNORE INTO Contient (IdCommande, IdPlat) " +
+                    string query = "INSERT IGNORE INTO Contient  " +
                                    "VALUES (@commande, @plat)";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@commande", (int)c.IdCommande);
