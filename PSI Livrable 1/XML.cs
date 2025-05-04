@@ -11,23 +11,23 @@ using System.IO;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
-    class XML
+    public class XML
     {
-        static string connectionString = "server=localhost;user=root;password=root;database=psi;";
+        static string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
 
-        static void Import(string[] args)
+        public static void Import()
         {
-            InsertCuisiniers("Cuisiniers.xml");
-            InsertParticuliers("Particuliers.xml");
-            InsertEntreprises("Entreprises.xml");
-            InsertCommandes("Commandes.xml");
-            InsertPlats("Plats.xml");
-            InsertIngredients("Ingredients.xml");
+            InsertCuisiniers("Cuisinier.xml");
+            InsertParticuliers("Particulier.xml");
+            InsertEntreprises("Entreprise.xml");
+            InsertCommandes("Commande.xml");
+            InsertPlats("Plat.xml");
+            InsertIngredients("Ingredient.xml");
             InsertEstCompose("EstCompose.xml");
             InsertContient("Contient.xml");
         }
 
-        static void InsertCuisiniers(string filePath)
+        public static void InsertCuisiniers(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("Cuisinier"))
@@ -51,7 +51,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
         }
 
-        static void InsertParticuliers(string filePath)
+        public static void InsertParticuliers(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("Particulier"))
@@ -74,7 +74,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
         }
 
-        static void InsertEntreprises(string filePath)
+        public static void InsertEntreprises(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("Entreprise"))
@@ -97,7 +97,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
         }
 
-        static void InsertCommandes(string filePath)
+        public static void InsertCommandes(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("Commande"))
@@ -119,7 +119,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
         }
 
-        static void InsertPlats(string filePath)
+        public static void InsertPlats(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("Plat"))
@@ -144,7 +144,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
         }
 
-        static void InsertIngredients(string filePath)
+        public static void InsertIngredients(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("Ingredient"))
@@ -162,7 +162,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
         }
 
-        static void InsertEstCompose(string filePath)
+        public static void InsertEstCompose(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("EstCompose"))
@@ -179,7 +179,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             }
         }
 
-        static void InsertContient(string filePath)
+        public static void InsertContient(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
             foreach (XElement element in doc.Root.Elements("Contient"))

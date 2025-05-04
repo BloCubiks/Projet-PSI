@@ -1,0 +1,64 @@
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Entreprise" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Entreprise">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NumeroEntreprise" type="xs:int" minOccurs="0" />
+                <xs:element name="NomE" type="xs:string" minOccurs="0" />
+                <xs:element name="ContactE" type="xs:string" minOccurs="0" />
+                <xs:element name="AdresseE" type="xs:string" minOccurs="0" />
+                <xs:element name="CodePostalE" type="xs:string" minOccurs="0" />
+                <xs:element name="TelE" type="xs:string" minOccurs="0" />
+                <xs:element name="EmailE" type="xs:string" minOccurs="0" />
+                <xs:element name="MetroE" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Entreprise>
+    <NumeroEntreprise>1</NumeroEntreprise>
+    <NomE>TechCorp</NomE>
+    <ContactE>Julie Morel</ContactE>
+    <AdresseE>Avenue des Champs</AdresseE>
+    <CodePostalE>75008</CodePostalE>
+    <TelE>0634567890</TelE>
+    <EmailE>contact@techcorp.com</EmailE>
+    <MetroE>Franklin D. Roosevelt</MetroE>
+  </Entreprise>
+  <Entreprise>
+    <NumeroEntreprise>2</NumeroEntreprise>
+    <NomE>DataSoft</NomE>
+    <ContactE>Marc Legrand</ContactE>
+    <AdresseE>Boulevard Voltaire</AdresseE>
+    <CodePostalE>75011</CodePostalE>
+    <TelE>0645678901</TelE>
+    <EmailE>marc.legrand@datasoft.com</EmailE>
+    <MetroE>République</MetroE>
+  </Entreprise>
+  <Entreprise>
+    <NumeroEntreprise>3</NumeroEntreprise>
+    <NomE>GreenTech</NomE>
+    <ContactE>Alice Marchand</ContactE>
+    <AdresseE>Rue Saint-Honoré</AdresseE>
+    <CodePostalE>75001</CodePostalE>
+    <TelE>0656789012</TelE>
+    <EmailE>alice.marchand@greentech.com</EmailE>
+    <MetroE>Palais Royal - Musée du Louvre</MetroE>
+  </Entreprise>
+  <Entreprise>
+    <NumeroEntreprise>4</NumeroEntreprise>
+    <NomE>CodeLab</NomE>
+    <ContactE>Olivier Dubois</ContactE>
+    <AdresseE>Rue Taitbout</AdresseE>
+    <CodePostalE>75009</CodePostalE>
+    <TelE>0667890123</TelE>
+    <EmailE>olivier.dubois@codelab.com</EmailE>
+    <MetroE>Trinité - d'Estienne d'Orves</MetroE>
+  </Entreprise>
+</NewDataSet>

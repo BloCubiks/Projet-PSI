@@ -1,0 +1,86 @@
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Plat" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Plat">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="IdPlat" type="xs:int" minOccurs="0" />
+                <xs:element name="NomPlat" type="xs:string" minOccurs="0" />
+                <xs:element name="Prix" type="xs:decimal" minOccurs="0" />
+                <xs:element name="Quantite" type="xs:int" minOccurs="0" />
+                <xs:element name="TypePlat" type="xs:string" minOccurs="0" />
+                <xs:element name="DateFabrication" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="DatePeremption" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="RegimeAlim" type="xs:string" minOccurs="0" />
+                <xs:element name="Nationalite" type="xs:string" minOccurs="0" />
+                <xs:element name="NumeroCuisinier" type="xs:int" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Plat>
+    <IdPlat>1</IdPlat>
+    <NomPlat>Pizza Margherita</NomPlat>
+    <Prix>12.50</Prix>
+    <Quantite>5</Quantite>
+    <TypePlat>Italien</TypePlat>
+    <DateFabrication>2024-03-28T00:00:00+01:00</DateFabrication>
+    <DatePeremption>2024-04-02T00:00:00+02:00</DatePeremption>
+    <RegimeAlim>Végétarien</RegimeAlim>
+    <Nationalite>Italien</Nationalite>
+    <NumeroCuisinier>1</NumeroCuisinier>
+  </Plat>
+  <Plat>
+    <IdPlat>2</IdPlat>
+    <NomPlat>Sushi Saumon</NomPlat>
+    <Prix>15.00</Prix>
+    <Quantite>10</Quantite>
+    <TypePlat>Japonais</TypePlat>
+    <DateFabrication>2024-03-29T00:00:00+01:00</DateFabrication>
+    <DatePeremption>2024-04-03T00:00:00+02:00</DatePeremption>
+    <RegimeAlim>Pescetarien</RegimeAlim>
+    <Nationalite>Japonais</Nationalite>
+    <NumeroCuisinier>2</NumeroCuisinier>
+  </Plat>
+  <Plat>
+    <IdPlat>3</IdPlat>
+    <NomPlat>Burger Classic</NomPlat>
+    <Prix>10.00</Prix>
+    <Quantite>7</Quantite>
+    <TypePlat>Américain</TypePlat>
+    <DateFabrication>2024-03-27T00:00:00+01:00</DateFabrication>
+    <DatePeremption>2024-04-01T00:00:00+02:00</DatePeremption>
+    <RegimeAlim>Omnivore</RegimeAlim>
+    <Nationalite>Américain</Nationalite>
+    <NumeroCuisinier>3</NumeroCuisinier>
+  </Plat>
+  <Plat>
+    <IdPlat>4</IdPlat>
+    <NomPlat>Tacos Poulet</NomPlat>
+    <Prix>11.00</Prix>
+    <Quantite>6</Quantite>
+    <TypePlat>Mexicain</TypePlat>
+    <DateFabrication>2024-03-30T00:00:00+01:00</DateFabrication>
+    <DatePeremption>2024-04-04T00:00:00+02:00</DatePeremption>
+    <RegimeAlim>Halal</RegimeAlim>
+    <Nationalite>Mexicain</Nationalite>
+    <NumeroCuisinier>4</NumeroCuisinier>
+  </Plat>
+  <Plat>
+    <IdPlat>5</IdPlat>
+    <NomPlat>Quiche aux lardons</NomPlat>
+    <Prix>12.90</Prix>
+    <Quantite>7</Quantite>
+    <TypePlat>Francais</TypePlat>
+    <DateFabrication>2024-03-30T00:00:00+01:00</DateFabrication>
+    <DatePeremption>2024-04-04T00:00:00+02:00</DatePeremption>
+    <RegimeAlim>Omnivore</RegimeAlim>
+    <Nationalite>Francais</Nationalite>
+    <NumeroCuisinier>4</NumeroCuisinier>
+  </Plat>
+</NewDataSet>

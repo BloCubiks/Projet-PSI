@@ -1,0 +1,69 @@
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Cuisinier" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Cuisinier">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NumeroCuisinier" type="xs:int" minOccurs="0" />
+                <xs:element name="NomC" type="xs:string" minOccurs="0" />
+                <xs:element name="PrenomC" type="xs:string" minOccurs="0" />
+                <xs:element name="AdresseC" type="xs:string" minOccurs="0" />
+                <xs:element name="CodePostalC" type="xs:string" minOccurs="0" />
+                <xs:element name="VilleC" type="xs:string" minOccurs="0" />
+                <xs:element name="TelC" type="xs:string" minOccurs="0" />
+                <xs:element name="EmailC" type="xs:string" minOccurs="0" />
+                <xs:element name="MetroC" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Cuisinier>
+    <NumeroCuisinier>1</NumeroCuisinier>
+    <NomC>Dupont</NomC>
+    <PrenomC>Jean</PrenomC>
+    <AdresseC>Rue de Paris</AdresseC>
+    <CodePostalC>75001</CodePostalC>
+    <VilleC>Paris</VilleC>
+    <TelC>0601020304</TelC>
+    <EmailC>jean.dupont@mail.com</EmailC>
+    <MetroC>Châtelet</MetroC>
+  </Cuisinier>
+  <Cuisinier>
+    <NumeroCuisinier>2</NumeroCuisinier>
+    <NomC>Lemoine</NomC>
+    <PrenomC>Claire</PrenomC>
+    <AdresseC>Boulevard Haussmann</AdresseC>
+    <CodePostalC>75009</CodePostalC>
+    <VilleC>Paris</VilleC>
+    <TelC>0611223344</TelC>
+    <EmailC>claire.lemoine@mail.com</EmailC>
+    <MetroC>Opéra</MetroC>
+  </Cuisinier>
+  <Cuisinier>
+    <NumeroCuisinier>3</NumeroCuisinier>
+    <NomC>Bernard</NomC>
+    <PrenomC>Luc</PrenomC>
+    <AdresseC>Rue Lafayette</AdresseC>
+    <CodePostalC>75010</CodePostalC>
+    <VilleC>Paris</VilleC>
+    <TelC>0622334455</TelC>
+    <EmailC>luc.bernard@mail.com</EmailC>
+    <MetroC>Gare du Nord</MetroC>
+  </Cuisinier>
+  <Cuisinier>
+    <NumeroCuisinier>4</NumeroCuisinier>
+    <NomC>Nguyen</NomC>
+    <PrenomC>Thierry</PrenomC>
+    <AdresseC>Rue Oberkampf</AdresseC>
+    <CodePostalC>75011</CodePostalC>
+    <VilleC>Paris</VilleC>
+    <TelC>0677889900</TelC>
+    <EmailC>thierry.nguyen@mail.com</EmailC>
+    <MetroC>Lourmel</MetroC>
+  </Cuisinier>
+</NewDataSet>

@@ -1,0 +1,69 @@
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Ingredient" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Ingredient">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="IdIngredient" type="xs:int" minOccurs="0" />
+                <xs:element name="Nom" type="xs:string" minOccurs="0" />
+                <xs:element name="Quantite" type="xs:int" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Ingredient>
+    <IdIngredient>1</IdIngredient>
+    <Nom>Tomate</Nom>
+    <Quantite>10</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>2</IdIngredient>
+    <Nom>Mozzarella</Nom>
+    <Quantite>5</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>3</IdIngredient>
+    <Nom>Basilic</Nom>
+    <Quantite>2</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>4</IdIngredient>
+    <Nom>Saumon</Nom>
+    <Quantite>4</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>5</IdIngredient>
+    <Nom>Riz</Nom>
+    <Quantite>6</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>6</IdIngredient>
+    <Nom>Viande hachée</Nom>
+    <Quantite>8</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>7</IdIngredient>
+    <Nom>Pain burger</Nom>
+    <Quantite>6</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>8</IdIngredient>
+    <Nom>Poulet mariné</Nom>
+    <Quantite>5</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>9</IdIngredient>
+    <Nom>Tortilla</Nom>
+    <Quantite>4</Quantite>
+  </Ingredient>
+  <Ingredient>
+    <IdIngredient>10</IdIngredient>
+    <Nom>Avocat</Nom>
+    <Quantite>3</Quantite>
+  </Ingredient>
+</NewDataSet>

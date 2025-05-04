@@ -11,11 +11,11 @@ using System.IO;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
-    class ExportXML
+    public class XMSExport
     {
-        static string connectionString = "Server=localhost;Database=psi;Trusted_Connection=True;";
+        static string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
 
-        public static void XMSExport()
+        public static void XMLExport()
         {
             ExportTableToXml("Cuisinier");
             ExportTableToXml("Particulier");
@@ -29,13 +29,13 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.WriteLine("Export XML terminé.");
         }
 
-        static void ExportTableToXml(string tableName)
+        public static void ExportTableToXml(string tableName)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string query = $"SELECT * FROM {tableName}";
 
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
                 DataTable dt = new DataTable(tableName);
                 adapter.Fill(dt);
 

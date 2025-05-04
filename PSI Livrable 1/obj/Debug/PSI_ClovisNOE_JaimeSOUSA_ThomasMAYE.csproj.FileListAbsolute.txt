@@ -126,3 +126,5 @@ C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\bi
 C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\overz\OneDrive\Documents\GitHub\Projet-PSI\Projet-PSI\PSI Livrable 1\obj\Debug\PSI_Clov.C0ECBCC6.Up2Date
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Clovis\Documents\GitHub\Projet-PSI\PSI Livrable 1\bin\Debug\Newtonsoft.Json.xml

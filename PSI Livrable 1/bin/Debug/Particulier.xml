@@ -1,0 +1,64 @@
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Particulier" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Particulier">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NumeroParticulier" type="xs:int" minOccurs="0" />
+                <xs:element name="NomP" type="xs:string" minOccurs="0" />
+                <xs:element name="PrenomP" type="xs:string" minOccurs="0" />
+                <xs:element name="AdresseP" type="xs:string" minOccurs="0" />
+                <xs:element name="CodePostalP" type="xs:string" minOccurs="0" />
+                <xs:element name="TelP" type="xs:string" minOccurs="0" />
+                <xs:element name="EmailP" type="xs:string" minOccurs="0" />
+                <xs:element name="MetroP" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Particulier>
+    <NumeroParticulier>1</NumeroParticulier>
+    <NomP>Martin</NomP>
+    <PrenomP>Sophie</PrenomP>
+    <AdresseP>Rue de Lyon</AdresseP>
+    <CodePostalP>75001</CodePostalP>
+    <TelP>0612345678</TelP>
+    <EmailP>sophie.martin@mail.com</EmailP>
+    <MetroP>Saint-Paul (Le Marais)</MetroP>
+  </Particulier>
+  <Particulier>
+    <NumeroParticulier>2</NumeroParticulier>
+    <NomP>Durand</NomP>
+    <PrenomP>Paul</PrenomP>
+    <AdresseP>Rue de Rivoli</AdresseP>
+    <CodePostalP>75001</CodePostalP>
+    <TelP>0623456789</TelP>
+    <EmailP>paul.durand@mail.com</EmailP>
+    <MetroP>Châtelet</MetroP>
+  </Particulier>
+  <Particulier>
+    <NumeroParticulier>3</NumeroParticulier>
+    <NomP>Leroy</NomP>
+    <PrenomP>Camille</PrenomP>
+    <AdresseP>Rue des Martyrs</AdresseP>
+    <CodePostalP>75009</CodePostalP>
+    <TelP>0634567890</TelP>
+    <EmailP>camille.leroy@mail.com</EmailP>
+    <MetroP>Pigalle</MetroP>
+  </Particulier>
+  <Particulier>
+    <NumeroParticulier>4</NumeroParticulier>
+    <NomP>Garcia</NomP>
+    <PrenomP>Nina</PrenomP>
+    <AdresseP>Rue du Faubourg</AdresseP>
+    <CodePostalP>75010</CodePostalP>
+    <TelP>0645678901</TelP>
+    <EmailP>nina.garcia@mail.com</EmailP>
+    <MetroP>Bonne Nouvelle</MetroP>
+  </Particulier>
+</NewDataSet>

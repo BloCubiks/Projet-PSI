@@ -11,18 +11,18 @@ using System.Data;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
-    class JSON
+    public class JSON
     {
-        static string connectionString = "server=localhost;user=root;password=root;database=psi;";
+        static string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
 
-        static void Import(string[] args)
+        public static void Import()
         {
-            InsertCuisiniers("Cuisiniers.json");
-            InsertParticuliers("Particuliers.json");
-            InsertEntreprises("Entreprises.json");
-            InsertCommandes("Commandes.json");
-            InsertPlats("Plats.json");
-            InsertIngredients("Ingredients.json");
+            InsertCuisiniers("Cuisinier.json");
+            InsertParticuliers("Particulier.json");
+            InsertEntreprises("Entreprise.json");
+            InsertCommandes("Commande.json");
+            InsertPlats("Plat.json");
+            InsertIngredients("Ingredient.json");
             InsertEstCompose("EstCompose.json");
             InsertContient("Contient.json");
         }

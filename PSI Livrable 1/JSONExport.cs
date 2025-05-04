@@ -11,9 +11,9 @@ using System.Data;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
-    class ExportJson
+    public class ExportJson
     {
-        static string connectionString = "Server=localhost;Database=psi;Trusted_Connection=True;";
+        static string connectionString = "SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root;";
 
         public static void JsonExport()
         {
@@ -29,7 +29,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
             Console.WriteLine("Export JSON terminé.");
         }
 
-        static void ExportTableToJson(string tableName)
+        public static void ExportTableToJson(string tableName)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {

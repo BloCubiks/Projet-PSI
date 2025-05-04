@@ -1,0 +1,79 @@
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Commande" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Commande">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="IDCommande" type="xs:int" minOccurs="0" />
+                <xs:element name="DateCommande" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="AdresseLivraison" type="xs:string" minOccurs="0" />
+                <xs:element name="Satisfaction" type="xs:int" minOccurs="0" />
+                <xs:element name="NumeroCuisinier" type="xs:int" minOccurs="0" />
+                <xs:element name="NumeroParticulier" type="xs:int" minOccurs="0" />
+                <xs:element name="NumeroEntreprise" type="xs:int" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Commande>
+    <IDCommande>1</IDCommande>
+    <DateCommande>2024-03-30T00:00:00+01:00</DateCommande>
+    <AdresseLivraison>Rue de Lyon, 45</AdresseLivraison>
+    <Satisfaction>8</Satisfaction>
+    <NumeroCuisinier>1</NumeroCuisinier>
+    <NumeroParticulier>1</NumeroParticulier>
+  </Commande>
+  <Commande>
+    <IDCommande>2</IDCommande>
+    <DateCommande>2024-03-29T00:00:00+01:00</DateCommande>
+    <AdresseLivraison>Avenue des Champs, 50</AdresseLivraison>
+    <Satisfaction>10</Satisfaction>
+    <NumeroCuisinier>2</NumeroCuisinier>
+    <NumeroEntreprise>1</NumeroEntreprise>
+  </Commande>
+  <Commande>
+    <IDCommande>3</IDCommande>
+    <DateCommande>2024-03-28T00:00:00+01:00</DateCommande>
+    <AdresseLivraison>Boulevard Voltaire, 20</AdresseLivraison>
+    <Satisfaction>7</Satisfaction>
+    <NumeroCuisinier>3</NumeroCuisinier>
+    <NumeroEntreprise>2</NumeroEntreprise>
+  </Commande>
+  <Commande>
+    <IDCommande>4</IDCommande>
+    <DateCommande>2024-03-27T00:00:00+01:00</DateCommande>
+    <AdresseLivraison>Rue des Martyrs, 11</AdresseLivraison>
+    <Satisfaction>9</Satisfaction>
+    <NumeroCuisinier>4</NumeroCuisinier>
+    <NumeroParticulier>3</NumeroParticulier>
+  </Commande>
+  <Commande>
+    <IDCommande>5</IDCommande>
+    <DateCommande>2024-03-26T00:00:00+01:00</DateCommande>
+    <AdresseLivraison>Rue Saint-Honoré, 78</AdresseLivraison>
+    <Satisfaction>6</Satisfaction>
+    <NumeroCuisinier>1</NumeroCuisinier>
+    <NumeroEntreprise>3</NumeroEntreprise>
+  </Commande>
+  <Commande>
+    <IDCommande>6</IDCommande>
+    <DateCommande>2024-03-28T00:00:00+01:00</DateCommande>
+    <AdresseLivraison>Rue de Rivoli, 78</AdresseLivraison>
+    <Satisfaction>2</Satisfaction>
+    <NumeroCuisinier>4</NumeroCuisinier>
+    <NumeroParticulier>2</NumeroParticulier>
+  </Commande>
+  <Commande>
+    <IDCommande>7</IDCommande>
+    <DateCommande>2024-03-22T00:00:00+01:00</DateCommande>
+    <AdresseLivraison>Rue Taitbout, 78</AdresseLivraison>
+    <Satisfaction>10</Satisfaction>
+    <NumeroCuisinier>4</NumeroCuisinier>
+    <NumeroEntreprise>4</NumeroEntreprise>
+  </Commande>
+</NewDataSet>

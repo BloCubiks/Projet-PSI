@@ -15,7 +15,10 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
         
         static void Main()
         {
-            ExportXML.XMSExport();
+            XMSExport.XMLExport();
+            XML.Import();
+            ExportJson.JsonExport();
+            JSON.Import();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             // Initialisation de la liste des stations et du graphe
