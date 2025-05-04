@@ -9,13 +9,13 @@ using System.Data.SqlClient;
 using System.Data;
 using System.IO;
 
-namespace PSI_Livrable_1
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     class XML
     {
         static string connectionString = "server=localhost;user=root;password=root;database=psi;";
 
-        static void Main(string[] args)
+        static void Import(string[] args)
         {
             InsertCuisiniers("Cuisiniers.xml");
             InsertParticuliers("Particuliers.xml");

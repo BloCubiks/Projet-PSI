@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Data;
 
-namespace PSI_Livrable_1
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     class ExportJson
     {
         static string connectionString = "Server=localhost;Database=psi;Trusted_Connection=True;";
 
-        public static void Export(string[] args)
+        public static void JsonExport()
         {
             ExportTableToJson("Cuisinier");
             ExportTableToJson("Particulier");

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Data;
 
-namespace PSI_Livrable_1
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     class JSON
     {

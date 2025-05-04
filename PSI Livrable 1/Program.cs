@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
@@ -14,6 +15,7 @@ namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
         
         static void Main()
         {
+            ExportXML.XMSExport();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             // Initialisation de la liste des stations et du graphe

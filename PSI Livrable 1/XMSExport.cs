@@ -9,13 +9,13 @@ using System.Data.SqlClient;
 using System.Data;
 using System.IO;
 
-namespace PSI_Livrable_1
+namespace PSI_ClovisNOE_JaimeSOUSA_ThomasMAYE
 {
     class ExportXML
     {
         static string connectionString = "Server=localhost;Database=psi;Trusted_Connection=True;";
 
-        static void Main(string[] args)
+        public static void XMSExport()
         {
             ExportTableToXml("Cuisinier");
             ExportTableToXml("Particulier");
